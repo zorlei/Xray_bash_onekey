@@ -3,6 +3,9 @@
 > 感谢 JetBrains 提供的非商业开源软件开发授权
 
 > Thanks for non-commercial open source development authorization by JetBrains
+
+>本脚本来源于 https://github.com/wulabing/V2Ray_ws-tls_bash_onekey 特此感谢
+
 ### 优化修改版说明
 * 可以直接输入命令：`idleleo`管理脚本
 * 减少直接访问，隐藏代理域名，302跳转至www.idleleo.com（了解配置过程可自行修改）
@@ -15,13 +18,13 @@
 
 ### 准备工作
 * 准备一个域名，并将A记录添加好。
-* [Xray官方说明](https://www.v2ray.com/)，了解 TLS WebSocket 及 Xray 相关信息
+* [Xray官方说明](https://github.com/XTLS)，了解 TLS WebSocket 及 Xray 相关信息
 * 安装好 wget
 
 ### 安装/更新方式（此为Xray版）
 VLess+websocket+TLS+Nginx+Website或xtls直连
 ```
-wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.com/paniy/V2Ray_ws-tls_bash_onekey/xray/install.sh" && chmod +x install.sh && bash install.sh
+wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.com/paniy/Xray_bash_onekey/main/install.sh" && chmod +x install.sh && bash install.sh
 ```
 
 ### 注意事项
@@ -56,7 +59,6 @@ wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.c
 
 ### 建议单服务器仅搭建单个代理
 * 本脚本默认安装最新版本的Xray core
-* Xray core 目前最新版本为 4.22.1（同时请注意客户端 core 的同步更新，需要保证客户端内核版本 >= 服务端内核版本）
 * 建议使用默认的443端口作为连接端口
 * 伪装内容可自行替换。
 
