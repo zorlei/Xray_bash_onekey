@@ -67,7 +67,6 @@ wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.c
 * 在尝试本脚本确实可用之前，请不要将本程序应用于生产环境中。
 * 该程序依赖 Nginx 实现相关功能，请使用 [LNMP](https://lnmp.org) 或其他类似携带 Nginx 脚本安装过 Nginx 的用户特别留意，使用本脚本可能会导致无法预知的错误（未测试，若存在，后续版本可能会处理本问题）。
 * xray 的部分功能依赖于系统时间，请确保您使用xray程序的系统 UTC 时间误差在三分钟之内，时区无关。
-* 本 bash 依赖于 [V2ray 官方安装脚本](https://install.direct/go.sh) 及 [acme.sh](https://github.com/Neilpang/acme.sh) 工作。
 * Centos 系统用户请预先在防火墙中放行程序相关端口（默认：80，443）
 
 
