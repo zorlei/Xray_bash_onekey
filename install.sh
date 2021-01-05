@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.2.3.3"
+shell_version="1.2.3.4"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -703,6 +703,7 @@ nginx_conf_add() {
         {
         proxy_redirect off;
         proxy_pass http://127.0.0.1:10000;
+        proxy_http_version 1.1;
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_set_header Upgrade \$http_upgrade;
