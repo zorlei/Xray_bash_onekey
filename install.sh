@@ -10,7 +10,7 @@ cd "$(
 #	System Request:Debian 9+/Ubuntu 18.04+/Centos 7+
 #	Author:	paniy
 #	Dscription: Xray ws+tls onekey Management
-#	Version: 1.0
+#	Version: 2.0
 #	email:admin@idleleo.com
 #	Official document: www.xray.com
 #====================================================
@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.2.3.4"
+shell_version="1.2.3.5"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
