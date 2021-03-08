@@ -295,18 +295,9 @@ modify_path() {
 }
 
 modify_alterid() {
-    if [[ $(grep -ic 'VLESS' ${xray_conf}) == 0 ]]; then
-        if [[ "on" == "$old_config_status" ]]; then
-            alterID="$(grep '\"aid\"' $xray_qr_config_file | awk -F '"' '{print $4}')"
-        fi
-        sed -i "/\"alterId\"/c \\\t\\t\\t\\t\"alterId\":${alterID}" ${xray_conf}
-        judge "Xray alterid 修改"
-        [ -f ${xray_qr_config_file} ] && sed -i "/\"aid\"/c \\  \"aid\": \"${alterID}\"," ${xray_qr_config_file}
-        echo -e "${OK} ${GreenBG} alterID:${alterID} ${Font}"
-    else
-        echo -e "${Warning} ${YellowBG} VLESS 不支持修改 alterid ${Font}"
-    fi
+    echo -e "${Warning} ${YellowBG} VLESS 不需要 alterid ${Font}"
 }
+
 modify_inbound_port() {
     if [[ "on" == "$old_config_status" ]]; then
         port="$(info_extraction '\"port\"')"
@@ -829,7 +820,6 @@ vless_qr_config_tls_ws() {
   "add": "${domain}",
   "port": "${port}",
   "id": "${UUID}",
-  "aid": "${alterID}",
   "net": "ws",
   "type": "none",
   "host": "${domain}",
@@ -847,7 +837,6 @@ vless_qr_config_xtls() {
   "add": "${domain}",
   "port": "${port}",
   "id": "${UUID}",
-  "aid": "${alterID}",
   "net": "tcp",
   "type": "none",
   "host": "${domain}",
@@ -865,9 +854,9 @@ vless_urlquote()
 vless_qr_link_image() {
     #vless_link="vless://$(base64 -w 0 $xray_qr_config_file)"
     if [[ "$shell_mode" != "xtls" ]]; then
-        vless_link="vless://${UUID}@$(vless_urlquote ${domain}):${port}?path=%2F$(vless_urlquote ${camouflage})%2F&security=tls&encryption=none&host=$(vless_urlquote ${domain})&type=ws#$(vless_urlquote ${domain})ws%E5%8D%8F%E8%AE%AE"
+        vless_link="vless://${UUID}@$(vless_urlquote ${domain}):${port}?path=%2F$(vless_urlquote ${camouflage})%2F&security=tls&encryption=auto&host=$(vless_urlquote ${domain})&type=ws#$(vless_urlquote ${domain})ws%E5%8D%8F%E8%AE%AE"
     else
-        vless_link="vless://${UUID}@$(vless_urlquote ${domain}):${port}?security=xtls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct-udp443#$(vless_urlquote ${domain})xtls%E5%8D%8F%E8%AE%AE"
+        vless_link="vless://${UUID}@$(vless_urlquote ${domain}):${port}?security=xtls&encryption=auto&headerType=none&type=tcp&flow=xtls-rprx-direct-udp443#$(vless_urlquote ${domain})xtls%E5%8D%8F%E8%AE%AE"
     fi
     echo -e "${OK} ${GreenBG} VLESS 目前分享链接规范为实验阶段，请自行判断是否适用 ${Font}"
         {
@@ -920,10 +909,6 @@ basic_information() {
         echo -e "${Red} 地址（address）:${Font} $(info_extraction '\"add\"') "
         echo -e "${Red} 端口（port）：${Font} $(info_extraction '\"port\"') "
         echo -e "${Red} 用户id（UUID）：${Font} $(info_extraction '\"id\"')"
-
-        if [[ $(grep -ic 'VLESS' ${xray_conf}) == 0 ]]; then
-            echo -e "${Red} 额外id（alterId）：${Font} $(info_extraction '\"aid\"')"
-        fi
 
         echo -e "${Red} 加密（encryption）：${Font} none "
         echo -e "${Red} 传输协议（network）：${Font} $(info_extraction '\"net\"') "
