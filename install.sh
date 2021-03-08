@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.3.0.2"
+shell_version="1.3.0.3"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -858,7 +858,7 @@ vless_qr_link_image() {
     else
         vless_link="vless://${UUID}@$(vless_urlquote ${domain}):${port}?security=xtls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct-udp443#$(vless_urlquote ${domain})xtls+%E5%8D%8F%E8%AE%AE"
     fi
-    echo -e "${OK} ${GreenBG} VLESS 目前分享链接规范为实验阶段，请自行判断是否适用 ${Font}"
+    echo -e "${OK} ${YellowBG} VLESS 目前分享链接规范为实验阶段，请自行判断是否适用 ${Font}"
         {
             echo -e "$Red 二维码: $Font"
             echo -n "${vless_link}" | qrencode -o - -t utf8
