@@ -856,7 +856,7 @@ vless_qr_link_image() {
     if [[ "$shell_mode" != "xtls" ]]; then
         vless_link="vless://${UUID}@$(vless_urlquote ${domain}):${port}?path=%2F$(vless_urlquote ${camouflage})%2F&security=tls&encryption=none&host=$(vless_urlquote ${domain})&type=ws#$(vless_urlquote ${domain})+ws%E5%8D%8F%E8%AE%AE"
     else
-        vless_link="vless://${UUID}@$(vless_urlquote ${domain}):${port}?security=xtls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct-udp443#$(vless_urlquote ${domain})+xtls%E5%8D%8F%E8%AE%AE"
+        vless_link="vless://${UUID}@$(vless_urlquote ${domain}):${port}?security=xtls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct#$(vless_urlquote ${domain})+xtls%E5%8D%8F%E8%AE%AE"
     fi
     echo -e "${OK} ${YellowBG} VLESS 目前分享链接规范为实验阶段，请自行判断是否适用 ${Font}"
         {
