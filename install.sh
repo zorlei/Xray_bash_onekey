@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.2.4.0"
+shell_version="1.3.0.0"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -44,7 +44,7 @@ nginx_openssl_src="/usr/local/src"
 xray_bin_dir="/usr/local/bin/xray"
 idleleo_xray_dir="/usr/bin/idleleo-xray"
 xray_info_file="$HOME/xray_info.inf"
-xray_qr_config_file="/usr/local/vmess_qr.json"
+xray_qr_config_file="/usr/local/vless_qr.json"
 nginx_systemd_file="/etc/systemd/system/nginx.service"
 xray_systemd_file="/etc/systemd/system/xray.service"
 xray_systemd_file2="/etc/systemd/system/xray@.service"
@@ -60,9 +60,6 @@ openssl_version="1.1.1j"
 jemalloc_version="5.2.1"
 old_config_status="off"
 # v2ray_plugin_version="$(wget -qO- "https://github.com/shadowsocks/v2ray-plugin/tags" | grep -E "/shadowsocks/v2ray-plugin/releases/tag/" | head -1 | sed -r 's/.*tag\/v(.+)\">.*/\1/')"
-
-#移动旧版本配置信息 对小于 1.1.0 版本适配
-[[ -f "/etc/xray/vmess_qr.json" ]] && mv /etc/xray/vmess_qr.json $xray_qr_config_file
 
 #简易随机数
 random_num=$((RANDOM % 12 + 4))
@@ -203,6 +200,9 @@ dependency_install() {
 
     ${INS} -y install curl
     judge "安装 curl"
+
+    ${INS} -y install python3
+    judge "安装 python3"
 
     if [[ "${ID}" == "centos" ]]; then
         ${INS} -y groupinstall "Development tools"
@@ -821,7 +821,7 @@ acme_cron_update() {
     judge "cron 计划任务更新"
 }
 
-vmess_qr_config_tls_ws() {
+vless_qr_config_tls_ws() {
     cat >$xray_qr_config_file <<-EOF
 {
   "v": "2",
@@ -839,7 +839,7 @@ vmess_qr_config_tls_ws() {
 EOF
 }
 
-vmess_qr_config_xtls() {
+vless_qr_config_xtls() {
     cat >$xray_qr_config_file <<-EOF
 {
   "v": "2",
@@ -856,41 +856,52 @@ vmess_qr_config_xtls() {
 EOF
 }
 
-vmess_qr_link_image() {
-    vmess_link="vmess://$(base64 -w 0 $xray_qr_config_file)"
-    echo -e "${OK} ${GreenBG} VLESS 目前无分享链接规范 请手动复制粘贴配置信息至客户端 ${Font}"
-    #    {
-    #        echo -e "$Red 二维码: $Font"
-    #        echo -n "${vmess_link}" | qrencode -o - -t utf8
-    #        echo -e "${Red} URL导入链接:${vmess_link} ${Font}"
-    #    } >>"${xray_info_file}"
+vless_urlquote()
+{
+    [[ $# = 0 ]] && return
+    echo "import urllib.request;print(urllib.request.quote('$1'));" | python3
 }
 
-vmess_quan_link_image() {
-    echo "$(info_extraction '\"ps\"') = vmess, $(info_extraction '\"add\"'), \
+vless_qr_link_image() {
+    #vless_link="vless://$(base64 -w 0 $xray_qr_config_file)"
+    if [[ "$shell_mode" != "xtls" ]]; then
+        vless_link="vless://${UUID}@$(vless_urlquote ${domain}):${port}?path=%2F$(vless_urlquote ${camouflage})%2F&security=tls&encryption=none&host=$(vless_urlquote ${domain})&type=ws#$(vless_urlquote ${domain})ws%E5%8D%8F%E8%AE%AE"
+    else
+        vless_link="vless://${UUID}@$(vless_urlquote ${domain}):${port}?security=xtls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct-udp443#$(vless_urlquote ${domain})xtls%E5%8D%8F%E8%AE%AE"
+    fi
+    echo -e "${OK} ${GreenBG} VLESS 目前分享链接规范为实验阶段，请自行判断是否适用 ${Font}"
+        {
+            echo -e "$Red 二维码: $Font"
+            echo -n "${vless_link}" | qrencode -o - -t utf8
+            echo -e "${Red} URL导入链接:${vless_link} ${Font}"
+        } >>"${xray_info_file}"
+}
+
+vless_quan_link_image() {
+    echo "$(info_extraction '\"ps\"') = vless, $(info_extraction '\"add\"'), \
     $(info_extraction '\"port\"'), chacha20-ietf-poly1305, "\"$(info_extraction '\"id\"')\"", over-tls=true, \
-    certificate=1, obfs=ws, obfs-path="\"$(info_extraction '\"path\"')\"", " >/tmp/vmess_quan.tmp
-    vmess_link="vmess://$(base64 -w 0 /tmp/vmess_quan.tmp)"
+    certificate=1, obfs=ws, obfs-path="\"$(info_extraction '\"path\"')\"", " >/tmp/vless_quan.tmp
+    vless_link="vless://$(base64 -w 0 /tmp/vless_quan.tmp)"
     echo -e "${OK} ${GreenBG} VLESS 目前无分享链接规范 请手动复制粘贴配置信息至客户端 ${Font}"
     #    {
     #        echo -e "$Red 二维码: $Font"
-    #        echo -n "${vmess_link}" | qrencode -o - -t utf8
-    #        echo -e "${Red} URL导入链接:${vmess_link} ${Font}"
+    #        echo -n "${vless_link}" | qrencode -o - -t utf8
+    #        echo -e "${Red} URL导入链接:${vless_link} ${Font}"
     #    } >>"${xray_info_file}"
 }
 
-vmess_link_image_choice() {
+vless_link_image_choice() {
     echo "请选择生成的链接种类"
-    echo "1: V2RayNG/V2RayN"
+    echo "1: V2RayNG/Qv2ray"
     #echo "2: quantumult"
     read -rp "请输入：" link_version
     [[ -z ${link_version} ]] && link_version=1
     if [[ $link_version == 1 ]]; then
-        vmess_qr_link_image
+        vless_qr_link_image
     #elif [[ $link_version == 2 ]]; then
-    #    vmess_quan_link_image
+    #    vless_quan_link_image
     else
-        vmess_qr_link_image
+        vless_qr_link_image
     fi
 }
 
@@ -1093,9 +1104,9 @@ install_xray_ws_tls() {
     web_camouflage
     ssl_judge_and_install
     nginx_systemd
-    vmess_qr_config_tls_ws
+    vless_qr_config_tls_ws
     basic_information
-    vmess_link_image_choice
+    vless_link_image_choice
     tls_type
     show_information
     start_process_systemd
@@ -1121,9 +1132,9 @@ install_v2_xtls() {
     xray_conf_add_xtls
     ssl_judge_and_install
     nginx_systemd
-    vmess_qr_config_xtls
+    vless_qr_config_xtls
     basic_information
-    vmess_qr_link_image
+    vless_qr_link_image
     show_information
     start_process_systemd
     enable_process_systemd
@@ -1286,9 +1297,9 @@ menu() {
     10)
         basic_information
         if [[ $shell_mode == "ws" ]]; then
-            vmess_link_image_choice
+            vless_link_image_choice
         else
-            vmess_qr_link_image
+            vless_qr_link_image
         fi
         show_information
         bash idleleo
