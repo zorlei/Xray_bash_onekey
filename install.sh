@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.3.0.1"
+shell_version="1.3.0.2"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -1252,9 +1252,7 @@ menu() {
         bash idleleo
         ;;
     5)
-        read -rp "请输入alterID:" alterID
         modify_alterid
-        start_process_systemd
         bash idleleo
         ;;
     6)
