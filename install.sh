@@ -21,7 +21,7 @@ Red="\033[31m"
 #Yellow="\033[33m"
 GreenBG="\033[42;37m"
 RedBG="\033[41;37m"
-YellowBG="\033[43;34m"
+YellowBG="\033[43;31m"
 Font="\033[0m"
 
 #notification information
