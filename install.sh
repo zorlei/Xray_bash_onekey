@@ -329,16 +329,16 @@ modify_inbound_port() {
     if [[ "$shell_mode" != "xtls" ]]; then
         PORT=$((RANDOM + 10000))
         #        sed -i "/\"port\"/c  \    \"port\":${PORT}," ${xray_conf}
-        sed -i "8c\\\t\\t\"port\":${PORT}," ${xray_conf}
+        sed -i "8c\        \"port\":${PORT}," ${xray_conf}
     else
         #        sed -i "/\"port\"/c  \    \"port\":${port}," ${xray_conf}
-        sed -i "8c\\\t\\t\"port\":${port}," ${xray_conf}
+        sed -i "8c\        \"port\":${port}," ${xray_conf}
     fi
     judge "Xray inbound_port 修改"
 }
 
 modify_UUID() {
-    sed -i "/\"id\"/c \\\t\\t\\t\\t\"id\":\"${UUID}\"," ${xray_conf}
+    sed -i "/\"id\"/c \                \"id\":\"${UUID}\"," ${xray_conf}
     judge "Xray UUID 修改"
     [ -f ${xray_qr_config_file} ] && sed -i "/\"id\"/c \\  \"id\": \"${UUID}\"," ${xray_qr_config_file}
     [ -f ${xray_qr_config_file} ] && sed -i "/\"idc\"/c \\  \"idc\": \"${UUID5_char}\"," ${xray_qr_config_file}
