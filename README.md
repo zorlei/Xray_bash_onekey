@@ -37,9 +37,6 @@ wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.c
 * 分享链接为实验版本，不排除未来变动的可能，请自行确认客户端是否支持。
 * 自定义字符串映射至 UUID 需要客户端支持。
 
-### 更新日志
-> 更新内容请查看 CHANGELOG.md。
-
 ### 鸣谢
 * ~~本脚本的另一个分支版本（Use Host）地址： https://github.com/dylanbai8/V2Ray_ws-tls_Website_onekey 请根据需求进行选择~~ 该作者可能已停止维护
 * 本脚本中 MTProxy-go TLS 版本项目引用 https://github.com/whunt1/onekeymakemtg 在此感谢 whunt1
