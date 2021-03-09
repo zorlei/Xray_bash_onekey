@@ -291,6 +291,7 @@ UUID_set() {
             #[ -z "$UUID" ] && UUID=$(cat /proc/sys/kernel/random/uuid)
             echo -e "${OK} ${GreenBG} UUID:${UUID} ${Font}"
             ;;
+        esac
     fi
 }
 
