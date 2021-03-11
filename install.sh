@@ -1249,7 +1249,7 @@ menu() {
 
     idleleo_commend
 
-    echo -e "—————————————— 安装向导 ——————————————"""
+    echo -e "—————————————— 安装向导 ——————————————"
     echo -e "${Green}0.${Font}  升级 脚本"
     echo -e "${Green}1.${Font}  安装 Xray (Nginx+ws+tls)"
     echo -e "${Green}2.${Font}  安装 Xray (xtls+Nginx)"
