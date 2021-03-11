@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.0.4"
+shell_version="1.4.0.5"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -1073,11 +1073,11 @@ mtproxy_sh() {
 uninstall_all() {
     stop_process_systemd
     systemctl disable xray
-    [[ -f $nginx_systemd_file ]] && rm -f $nginx_systemd_file
-    [[ -f $xray_systemd_file ]] && rm -f $xray_systemd_file
-    [[ -f $xray_systemd_file2 ]] && rm -f $xray_systemd_file2
-    [[ -d $xray_systemd_filed ]] && rm -f $xray_systemd_filed
-    [[ -d $xray_systemd_filed2 ]] && rm -f $xray_systemd_filed2
+    [[ -f $nginx_systemd_file ]] && rm -rf $nginx_systemd_file
+    [[ -f $xray_systemd_file ]] && rm -rf $xray_systemd_file
+    [[ -f $xray_systemd_file2 ]] && rm -rf $xray_systemd_file2
+    [[ -d $xray_systemd_filed ]] && rm -rf $xray_systemd_filed
+    [[ -d $xray_systemd_filed2 ]] && rm -rf $xray_systemd_filed2
     [[ -f $xray_bin_dir ]] && rm -rf $xray_bin_dir
     if [[ -d $nginx_dir ]]; then
         echo -e "${OK} ${Green} 是否卸载 Nginx [Y/N]? ${Font}"
