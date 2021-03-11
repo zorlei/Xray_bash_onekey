@@ -554,7 +554,7 @@ nginx_install() {
     --with-http_secure_link_module \
     --with-http_sub_module \
     --with-http_v2_module \
-    --with-cc-opt='-O2' \
+    --with-cc-opt='-O3' \
     --with-ld-opt="-ljemalloc" \
     --with-openssl=../openssl-"$openssl_version"
     judge "编译检查"
