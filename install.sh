@@ -377,10 +377,10 @@ modify_nginx_other() {
     sed -i "/server_name/c \\\t\\tserver_name ${domain};" ${nginx_conf}
     if [[ "$shell_mode" != "xtls" ]]; then
         sed -i "/location/c \\\tlocation ${camouflage}" ${nginx_conf}
-        sed -i "/proxy_pass/c \\\tproxy_pass http://127.0.0.1:${PORT};" ${nginx_conf}
+        sed -i "/proxy_pass/c \\\t\\tproxy_pass http://127.0.0.1:${PORT};" ${nginx_conf}
     fi
     sed -i "/return/c \\\t\\treturn 301 https://${domain}\$request_uri;" ${nginx_conf}
-    sed -i "/returc/c \\\t\\treturn 302 https://www.idleleo.com/helloworld;" ${nginx_conf}
+    sed -i "/returc/c \\\t\\t\\treturn 302 https://www.idleleo.com/helloworld;" ${nginx_conf}
     sed -i "/locatioc/c \\\t\\tlocation \/" ${nginx_conf}
     #sed -i "/#gzip  on;/c \\\t#gzip  on;\\n\\tserver_tokens off;" ${nginx_dir}/conf/nginx.conf
     #sed -i "/\\tserver_tokens off;\\n\\tserver_tokens off;/c \\\tserver_tokens off;" ${nginx_dir}/conf/nginx.conf
@@ -736,25 +736,25 @@ nginx_conf_add() {
 
         location /ray/
         {
-        proxy_redirect off;
-        proxy_pass http://127.0.0.1:10000;
-        proxy_http_version 1.1;
-        proxy_connect_timeout 180s;
-        proxy_send_timeout 180s;
-        proxy_read_timeout 1800s;
-        proxy_buffering off;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host \$http_host;
+            proxy_redirect off;
+            proxy_pass http://127.0.0.1:10000;
+            proxy_http_version 1.1;
+            proxy_connect_timeout 180s;
+            proxy_send_timeout 180s;
+            proxy_read_timeout 1800s;
+            proxy_buffering off;
+            proxy_set_header X-Real-IP \$remote_addr;
+            proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+            proxy_set_header Upgrade \$http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_set_header Host \$http_host;
 
         # Config for 0-RTT in TLSv1.3
-        proxy_set_header Early-Data \$ssl_early_data;
+            proxy_set_header Early-Data \$ssl_early_data;
         }
         locatioc
         {
-        returc
+            returc
         }
     }
     server {
@@ -783,7 +783,7 @@ nginx_conf_add_xtls() {
         add_header Strict-Transport-Security "max-age=63072000" always;
         locatioc
         {
-        returc
+            returc
         }
     }
     server {
