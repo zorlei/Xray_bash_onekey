@@ -1235,7 +1235,7 @@ idleleo_commend() {
             cd "$(dirname "$0")"
             pwd
         )/install.sh ${idleleo_commend_file}
-        echo -e "${Green}可以使用${Red}idleleo${Font}命令管理脚本\n${Font}"
+        echo -e "${Green}可以使用${Red} idleleo ${Font}命令管理脚本\n${Font}"
     fi
 }
 
