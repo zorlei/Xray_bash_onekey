@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.0.2"
+shell_version="1.4.0.3"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -97,13 +97,13 @@ check_system() {
 
     $INS install dbus
 
-    systemctl stop firewalld
-    systemctl disable firewalld
-    echo -e "${OK} ${GreenBG} firewalld 已关闭 ${Font}"
+    #systemctl stop firewalld
+    #systemctl disable firewalld
+    #echo -e "${OK} ${GreenBG} firewalld 已关闭 ${Font}"
 
-    systemctl stop ufw
-    systemctl disable ufw
-    echo -e "${OK} ${GreenBG} ufw 已关闭 ${Font}"
+    #systemctl stop ufw
+    #systemctl disable ufw
+    #echo -e "${OK} ${GreenBG} ufw 已关闭 ${Font}"
 }
 
 is_root() {
@@ -267,6 +267,23 @@ port_set() {
         read -rp "请输入连接端口（default:443）:" port
         [[ -z ${port} ]] && port="443"
     fi
+}
+
+firewall_set() {
+    if [[ "${ID}" == "centos" && ${VERSION_ID} -ge 7 ]]; then
+        firewall-cmd --permanent --add-port=80/tcp
+        firewall-cmd --permanent --add-port=443/tcp
+        firewall-cmd --permanent --add-port=1024-65535/udp
+        firewall-cmd --permanent --add-port=${port}
+        firewall-cmd --reload
+    else
+        ufw allow 80,443/tcp
+        ufw allow 1024:65535/udp
+        ufw allow ${port}
+        ufw reload
+    fi
+    echo -e "${OK} ${GreenBG} 开放防火墙相关端口 ${Font}"
+    echo -e "${OK} ${GreenBG} 配置Xray FullCone ${Font}"
 }
 
 UUID_set() {
@@ -1105,6 +1122,7 @@ install_xray_ws_tls() {
     domain_check
     old_config_exist_check
     port_set
+    firewall_set
     UUID_set
     stop_service
     xray_install
@@ -1135,6 +1153,7 @@ install_v2_xtls() {
     domain_check
     old_config_exist_check
     port_set
+    firewall_set
     UUID_set
     stop_service
     xray_install
@@ -1287,8 +1306,10 @@ menu() {
         read -rp "请输入连接端口:" port
         if grep -q "ws" $xray_qr_config_file; then
             modify_nginx_port
+            firewall_set
         elif grep -q "xtls" $xray_qr_config_file; then
             modify_inbound_port
+            firewall_set
         fi
         start_process_systemd
         bash idleleo
