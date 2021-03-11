@@ -591,7 +591,7 @@ ssl_install() {
 
 domain_check() {
     read -rp "请输入你的域名信息(eg:www.idleleo.com):" domain
-    echo "请选择 公网IP 为IPv4或IPv6"
+    echo "请选择 公网IP 为 IPv4 或 IPv6"
     echo "1: IPv4 (默认)"
     echo "2: IPv6 (不推荐)"
     read -rp "请输入：" ip_version
