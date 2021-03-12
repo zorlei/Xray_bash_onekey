@@ -1206,7 +1206,7 @@ list() {
 
 idleleo_commend() {
     if [ -L "${idleleo_commend_file}" ]; then
-        echo -e "${Green}可以使用${Red}idleleo${Font}命令管理脚本\n${Font}"
+        echo -e "${Green}可以使用${Red} idleleo ${Font}命令管理脚本\n${Font}"
     else
         if [ -L "/usr/local/bin/idleleo" ]; then
             rm -f /usr/local/bin/idleleo
