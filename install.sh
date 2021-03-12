@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.0.6"
+shell_version="1.4.1.0"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -63,8 +63,6 @@ old_config_status="off"
 
 #简易随机数
 random_num=$((RANDOM % 12 + 4))
-#生成伪装路径
-camouflage="/$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})/"
 
 THREAD=$(grep 'processor' /proc/cpuinfo | sort -u | wc -l)
 
@@ -287,6 +285,26 @@ firewall_set() {
     echo -e "${OK} ${GreenBG} 配置Xray FullCone ${Font}"
 }
 
+path_set() {
+    if [[ "on" == "$old_config_status" ]]; then
+        camouflage="$(grep '\"path\"' $xray_qr_config_file | awk -F '"' '{print $4}')"
+    else
+        echo -e "${OK} ${GreenBG} 是否需要自定义伪装路径 [Y/N]? ${Font}"
+        read -r path_modify_fq
+        case $path_modify_fq in
+        [yY][eE][sS] | [yY])
+            read -rp "请输入自定义伪装路径:" camouflage
+            echo -e "${OK} ${GreenBG} 伪装路径为： ${camouflage}"
+            ;;
+        *)
+            #生成伪装路径
+            camouflage="/$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})/"
+            echo -e "${OK} ${GreenBG} 伪装路径为： ${camouflage}"
+            ;;
+        esac
+    fi
+}
+
 UUID_set() {
     if [[ "on" == "$old_config_status" ]]; then
         UUID="$(info_extraction '\"id\"')"
@@ -324,23 +342,12 @@ stop_service() {
     echo -e "${OK} ${GreenBG} 停止已有服务 ${Font}"
 }
 
-modify_path() {
-    if [[ "on" == "$old_config_status" ]]; then
-        camouflage="$(grep '\"path\"' $xray_qr_config_file | awk -F '"' '{print $4}')"
-    fi
-    if [[ "$shell_mode" != "xtls" ]]; then
-        sed -i "/\"path\"/c \\\t\\t\"path\":\"${camouflage}\"" ${xray_conf}
-    else
-        echo -e "${Warning} ${YellowBG} xtls 不支持 path ${Font}"
-    fi
-    judge "Xray 伪装路径 修改"
-}
-
 modify_alterid() {
     echo -e "${Warning} ${YellowBG} VLESS 不需要 alterid ${Font}"
 }
 
 modify_inbound_port() {
+    judge "Xray inbound_port 修改"
     if [[ "on" == "$old_config_status" ]]; then
         port="$(info_extraction '\"port\"')"
     fi
@@ -352,26 +359,18 @@ modify_inbound_port() {
         #        sed -i "/\"port\"/c  \    \"port\":${port}," ${xray_conf}
         sed -i "8c\        \"port\":${port}," ${xray_conf}
     fi
-    judge "Xray inbound_port 修改"
-}
-
-modify_UUID() {
-    sed -i "/\"id\"/c \                \"id\":\"${UUID}\"," ${xray_conf}
-    judge "Xray UUID 修改"
-    [ -f ${xray_qr_config_file} ] && sed -i "/\"id\"/c \\  \"id\": \"${UUID}\"," ${xray_qr_config_file}
-    [ -f ${xray_qr_config_file} ] && sed -i "/\"idc\"/c \\  \"idc\": \"${UUID5_char}\"," ${xray_qr_config_file}
-    echo -e "${OK} ${GreenBG} UUID:${UUID} ${Font}"
+    echo -e "${OK} ${GreenBG} inbound_port:${port} 设置成功 ${Font}"
 }
 
 modify_nginx_port() {
+    judge "Xray port 修改"
     if [[ "on" == "$old_config_status" ]]; then
         port="$(info_extraction '\"port\"')"
     fi
     sed -i "/ssl http2;$/c \\\tlisten ${port} ssl http2;" ${nginx_conf}
     sed -i "4c \\\t\\tlisten [::]:${port} ssl http2;" ${nginx_conf}
-    judge "Xray port 修改"
     [ -f ${xray_qr_config_file} ] && sed -i "/\"port\"/c \\  \"port\": \"${port}\"," ${xray_qr_config_file}
-    echo -e "${OK} ${GreenBG} 端口号:${port} ${Font}"
+    echo -e "${OK} ${GreenBG} 端口号:${port} 设置成功 ${Font}"
 }
 
 modify_nginx_other() {
@@ -389,6 +388,24 @@ modify_nginx_other() {
     #sed -i "27i \\\tproxy_intercept_errors on;"  ${nginx_dir}/conf/nginx.conf
 }
 
+modify_path() {
+    judge "Xray 伪装路径 修改"
+    if [[ "$shell_mode" != "xtls" ]]; then
+        sed -i "/\"path\"/c \\\t\\t\"path\":\"${camouflage}\"" ${xray_conf}
+    else
+        echo -e "${Warning} ${YellowBG} xtls 不支持 path ${Font}"
+    fi
+    echo -e "${OK} ${GreenBG} 伪装路径:${camouflage} 设置成功 ${Font}"
+}
+
+modify_UUID() {
+    judge "Xray UUID 修改"
+    sed -i "/\"id\"/c \                \"id\":\"${UUID}\"," ${xray_conf}
+    [ -f ${xray_qr_config_file} ] && sed -i "/\"id\"/c \\  \"id\": \"${UUID}\"," ${xray_qr_config_file}
+    [ -f ${xray_qr_config_file} ] && sed -i "/\"idc\"/c \\  \"idc\": \"${UUID5_char}\"," ${xray_qr_config_file}
+    echo -e "${OK} ${GreenBG} UUID:${UUID} 设置成功 ${Font}"
+}
+
 web_camouflage() {
     ##请注意 这里和LNMP脚本的默认路径冲突，千万不要在安装了LNMP的环境下使用本脚本，否则后果自负
     #rm -rf /home/wwwroot
@@ -397,6 +414,7 @@ web_camouflage() {
     #git clone https://github.com/wulabing/3DCEList.git
     judge "web 站点伪装"
 }
+
 xray_privilege_escalation() {
     if [[ -n "$(grep "User=nobody" ${xray_systemd_file})" ]]; then
         #echo -e "${OK} ${GreenBG} 检测到Xray权限不足，将提高Xray权限至root ${Font}"
@@ -1124,6 +1142,7 @@ install_xray_ws_tls() {
     old_config_exist_check
     port_set
     firewall_set
+    path_set
     UUID_set
     stop_service
     xray_install
