@@ -146,7 +146,7 @@ chrony_install() {
     chronyc sourcestats -v
     chronyc tracking -v
     date
-    read -rp "请确认时间是否准确,误差范围±3分钟(Y/N): " chrony_install
+    read -rp "请确认时间是否准确,误差范围±3分钟 [Y/N]?" chrony_install
     [[ -z ${chrony_install} ]] && chrony_install="Y"
     case $chrony_install in
     [yY][eE][sS] | [yY])
@@ -635,7 +635,7 @@ domain_check() {
         sleep 2
     else
         echo -e "${Error} ${RedBG} 请确保域名添加了正确的 A/AAAA 记录，否则将无法正常使用 Xray ${Font}"
-        echo -e "${Error} ${RedBG} 域名dns解析IP 与 本机IP 不匹配 是否继续安装？（y/n）${Font}" && read -r install
+        echo -e "${Error} ${RedBG} 域名dns解析IP 与 本机IP 不匹配 是否继续安装 [Y/N]? ${Font}" && read -r install
         case $install in
         [yY][eE][sS] | [yY])
             echo -e "${GreenBG} 继续安装 ${Font}"
