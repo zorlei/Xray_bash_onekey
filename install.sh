@@ -279,13 +279,13 @@ UUID_set() {
         [yY][eE][sS] | [yY])
             read -n 30 -rp "请输入自定义字符串（最多30字符）:" UUID5_char
             UUID=$(UUIDv5_tranc ${UUID5_char})
-            echo -e "${OK} ${GreenBG} 自定义字符串:${UUID5_char} ${Font}"
+            echo -e "${OK} ${GreenBG} 自定义字符串: ${UUID5_char} ${Font}"
             echo -e "${OK} ${GreenBG} UUIDv5: ${UUID} ${Font}"
             ;;
         [nN][oO] | [nN] | *)
             UUID5_char="$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})"
             UUID=$(UUIDv5_tranc ${UUID5_char})
-            echo -e "${OK} ${GreenBG} UUID映射字符串:${UUID5_char} ${Font}"
+            echo -e "${OK} ${GreenBG} UUID映射字符串: ${UUID5_char} ${Font}"
             echo -e "${OK} ${GreenBG} UUIDv5: ${UUID} ${Font}"
             #[ -z "$UUID" ] && UUID=$(cat /proc/sys/kernel/random/uuid)
             echo -e "${OK} ${GreenBG} UUID: ${UUID} ${Font}"
