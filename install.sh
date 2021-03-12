@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.1.1"
+shell_version="1.4.1.2"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -293,7 +293,8 @@ path_set() {
         read -r path_modify_fq
         case $path_modify_fq in
         [yY][eE][sS] | [yY])
-            read -rp "请输入自定义伪装路径:" camouflage
+            read -rp "请输入自定义伪装路径(不需要“/”):" camouflage
+            camouflage="/${camouflage}/"
             echo -e "${OK} ${GreenBG} 伪装路径为： ${camouflage} ${Font}"
             ;;
         *)
@@ -367,7 +368,7 @@ modify_nginx_port() {
     if [[ "on" == "$old_config_status" ]]; then
         port="$(info_extraction '\"port\"')"
     fi
-    sed -i "/ssl http2;$/c \\\tlisten ${port} ssl http2;" ${nginx_conf}
+    sed -i "/ssl http2;$/c \\\t\\tlisten ${port} ssl http2;" ${nginx_conf}
     sed -i "4c \\\t\\tlisten [::]:${port} ssl http2;" ${nginx_conf}
     [ -f ${xray_qr_config_file} ] && sed -i "/\"port\"/c \\  \"port\": \"${port}\"," ${xray_qr_config_file}
     echo -e "${OK} ${GreenBG} 端口号:${port} 设置成功 ${Font}"
@@ -377,7 +378,7 @@ modify_nginx_other() {
     sed -i "/server_name/c \\\t\\tserver_name ${domain};" ${nginx_conf}
     if [[ "$shell_mode" != "xtls" ]]; then
         sed -i "/location/c \\\tlocation ${camouflage}" ${nginx_conf}
-        sed -i "/proxy_pass/c \\\t\\tproxy_pass http://127.0.0.1:${PORT};" ${nginx_conf}
+        sed -i "/proxy_pass/c \\\t\\t\\tproxy_pass http://127.0.0.1:${PORT};" ${nginx_conf}
     fi
     sed -i "/return/c \\\t\\treturn 301 https://${domain}\$request_uri;" ${nginx_conf}
     sed -i "/returc/c \\\t\\t\\treturn 302 https://www.idleleo.com/helloworld;" ${nginx_conf}
