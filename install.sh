@@ -280,15 +280,15 @@ UUID_set() {
             read -n 30 -rp "请输入自定义字符串（最多30字符）:" UUID5_char
             UUID=$(UUIDv5_tranc ${UUID5_char})
             echo -e "${OK} ${GreenBG} 自定义字符串:${UUID5_char} ${Font}"
-            echo -e "${OK} ${GreenBG} UUIDv5:${UUID} ${Font}"
+            echo -e "${OK} ${GreenBG} UUIDv5: ${UUID} ${Font}"
             ;;
         [nN][oO] | [nN] | *)
             UUID5_char="$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})"
             UUID=$(UUIDv5_tranc ${UUID5_char})
             echo -e "${OK} ${GreenBG} UUID映射字符串:${UUID5_char} ${Font}"
-            echo -e "${OK} ${GreenBG} UUIDv5:${UUID} ${Font}"
+            echo -e "${OK} ${GreenBG} UUIDv5: ${UUID} ${Font}"
             #[ -z "$UUID" ] && UUID=$(cat /proc/sys/kernel/random/uuid)
-            echo -e "${OK} ${GreenBG} UUID:${UUID} ${Font}"
+            echo -e "${OK} ${GreenBG} UUID: ${UUID} ${Font}"
             ;;
         esac
     fi
@@ -322,7 +322,7 @@ modify_inbound_port() {
         sed -i "8c\        \"port\":${port}," ${xray_conf}
     fi
     judge "Xray inbound_port 修改"
-    echo -e "${OK} ${GreenBG} inbound_port:${port} ${Font}"
+    echo -e "${OK} ${GreenBG} inbound_port: ${port} ${Font}"
 }
 
 modify_nginx_port() {
@@ -333,7 +333,7 @@ modify_nginx_port() {
     sed -i "4c \\\t\\tlisten [::]:${port} ssl http2;" ${nginx_conf}
     [ -f ${xray_qr_config_file} ] && sed -i "/\"port\"/c \\  \"port\": \"${port}\"," ${xray_qr_config_file}
     judge "Xray port 修改"
-    echo -e "${OK} ${GreenBG} 端口号:${port} ${Font}"
+    echo -e "${OK} ${GreenBG} 端口号: ${port} ${Font}"
 }
 
 modify_nginx_other() {
@@ -358,7 +358,7 @@ modify_path() {
         echo -e "${Warning} ${YellowBG} xtls 不支持 path ${Font}"
     fi
     judge "Xray 伪装路径 修改"
-    echo -e "${OK} ${GreenBG} 伪装路径:${camouflage} ${Font}"
+    echo -e "${OK} ${GreenBG} 伪装路径: ${camouflage} ${Font}"
 }
 
 modify_UUID() {
@@ -366,7 +366,7 @@ modify_UUID() {
     [ -f ${xray_qr_config_file} ] && sed -i "/\"id\"/c \\  \"id\": \"${UUID}\"," ${xray_qr_config_file}
     [ -f ${xray_qr_config_file} ] && sed -i "/\"idc\"/c \\  \"idc\": \"${UUID5_char}\"," ${xray_qr_config_file}
     judge "Xray UUID 修改"
-    echo -e "${OK} ${GreenBG} UUID:${UUID} ${Font}"
+    echo -e "${OK} ${GreenBG} UUIDv5: ${UUID} ${Font}"
 }
 
 web_camouflage() {
