@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.1.2"
+shell_version="1.4.1.3"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -261,7 +261,6 @@ path_set() {
             echo -e "${OK} ${GreenBG} 伪装路径为： ${camouflage} ${Font}"
             ;;
         *)
-            #生成伪装路径
             camouflage="/$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})/"
             echo -e "${OK} ${GreenBG} 伪装路径为： ${camouflage} ${Font}"
             ;;
