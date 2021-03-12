@@ -150,11 +150,11 @@ chrony_install() {
     [[ -z ${chrony_install} ]] && chrony_install="Y"
     case $chrony_install in
     [yY][eE][sS] | [yY])
-        echo -e "${GreenBG} 继续安装 ${Font}"
+        echo -e "${OK} ${GreenBG} 继续安装 ${Font}"
         sleep 2
         ;;
     *)
-        echo -e "${RedBG} 安装终止 ${Font}"
+        echo -e "${Error} ${RedBG} 安装终止 ${Font}"
         exit 2
         ;;
     esac
@@ -642,7 +642,7 @@ domain_check() {
             sleep 2
             ;;
         *)
-            echo -e "${RedBG} 安装终止 ${Font}"
+            echo -e "${Error} ${RedBG} 安装终止 ${Font}"
             exit 2
             ;;
         esac
@@ -1068,15 +1068,15 @@ tls_type() {
 }
 
 show_access_log() {
-    [ -f ${xray_access_log} ] && tail -f ${xray_access_log} || echo -e "${RedBG}log文件不存在${Font}"
+    [ -f ${xray_access_log} ] && tail -f ${xray_access_log} || echo -e "${Error} ${RedBG} log文件不存在 ${Font}"
 }
 
 show_error_log() {
-    [ -f ${xray_error_log} ] && tail -f ${xray_error_log} || echo -e "${RedBG}log文件不存在${Font}"
+    [ -f ${xray_error_log} ] && tail -f ${xray_error_log} || echo -e "${Error} ${RedBG} log文件不存在 ${Font}"
 }
 
 ssl_update_manuel() {
-    [ -f ${amce_sh_file} ] && "/root/.acme.sh"/acme.sh --cron --home "/root/.acme.sh" || echo -e "${RedBG}证书签发工具不存在，请确认你是否使用了自己的证书${Font}"
+    [ -f ${amce_sh_file} ] && "/root/.acme.sh"/acme.sh --cron --home "/root/.acme.sh" || echo -e "${Error} ${RedBG} 证书签发工具不存在，请确认你是否使用了自己的证书 ${Font}"
     domain="$(info_extraction '\"add\"')"
     "$HOME"/.acme.sh/acme.sh --installcert -d "${domain}" --fullchainpath /data/xray.crt --keypath /data/xray.key --ecc
 }
@@ -1219,8 +1219,8 @@ update_sh() {
 }
 
 maintain() {
-    echo -e "${RedBG}该选项暂时无法使用${Font}"
-    echo -e "${RedBG}$1${Font}"
+    echo -e "${Error} ${RedBG} 该选项暂时无法使用 ${Font}"
+    echo -e "${Error} ${RedBG} $1 ${Font}"
     exit 0
 }
 
@@ -1387,7 +1387,7 @@ menu() {
         exit 0
         ;;
     *)
-        echo -e "${RedBG}请输入正确的数字${Font}"
+        echo -e "${Error} ${RedBG} 请输入正确的数字 ${Font}"
         bash idleleo
         ;;
     esac
