@@ -59,7 +59,6 @@ nginx_version="1.18.0"
 openssl_version="1.1.1j"
 jemalloc_version="5.2.1"
 old_config_status="off"
-# v2ray_plugin_version="$(wget -qO- "https://github.com/shadowsocks/v2ray-plugin/tags" | grep -E "/shadowsocks/v2ray-plugin/releases/tag/" | head -1 | sed -r 's/.*tag\/v(.+)\">.*/\1/')"
 
 #简易随机数
 random_num=$((RANDOM % 12 + 4))
@@ -122,42 +121,6 @@ judge() {
         echo -e "${Error} ${RedBG} $1 失败${Font}"
         exit 1
     fi
-}
-
-chrony_install() {
-    ${INS} -y install chrony
-    judge "安装 chrony 时间同步服务 "
-
-    timedatectl set-ntp true
-
-    if [[ "${ID}" == "centos" ]]; then
-        systemctl enable chronyd && systemctl restart chronyd
-    else
-        systemctl enable chrony && systemctl restart chrony
-    fi
-
-    judge "chronyd 启动 "
-
-    timedatectl set-timezone Asia/Shanghai
-
-    echo -e "${OK} ${GreenBG} 等待时间同步 ${Font}"
-    sleep 10
-
-    chronyc sourcestats -v
-    chronyc tracking -v
-    date
-    read -rp "请确认时间是否准确,误差范围±3分钟 [Y/N]?" chrony_install
-    [[ -z ${chrony_install} ]] && chrony_install="Y"
-    case $chrony_install in
-    [yY][eE][sS] | [yY])
-        echo -e "${OK} ${GreenBG} 继续安装 ${Font}"
-        sleep 2
-        ;;
-    *)
-        echo -e "${Error} ${RedBG} 安装终止 ${Font}"
-        exit 2
-        ;;
-    esac
 }
 
 dependency_install() {
@@ -1136,7 +1099,6 @@ judge_mode() {
 install_xray_ws_tls() {
     is_root
     check_system
-    #    chrony_install
     dependency_install
     basic_optimization
     domain_check
@@ -1168,7 +1130,6 @@ install_xray_ws_tls() {
 install_v2_xtls() {
     is_root
     check_system
-    #    chrony_install
     dependency_install
     basic_optimization
     domain_check
@@ -1245,7 +1206,6 @@ list() {
 }
 
 idleleo_commend() {
-    #增加管理命令
     if [ -L "${idleleo_commend_file}" ]; then
         echo -e "${Green}可以使用${Red}idleleo${Font}命令管理脚本\n${Font}"
     else
