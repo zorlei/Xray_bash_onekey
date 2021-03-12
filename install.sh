@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.1.0"
+shell_version="1.4.1.1"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -289,17 +289,17 @@ path_set() {
     if [[ "on" == "$old_config_status" ]]; then
         camouflage="$(grep '\"path\"' $xray_qr_config_file | awk -F '"' '{print $4}')"
     else
-        echo -e "${OK} ${GreenBG} 是否需要自定义伪装路径 [Y/N]? ${Font}"
+        echo -e "${GreenBG} 是否需要自定义伪装路径 [Y/N]? ${Font}"
         read -r path_modify_fq
         case $path_modify_fq in
         [yY][eE][sS] | [yY])
             read -rp "请输入自定义伪装路径:" camouflage
-            echo -e "${OK} ${GreenBG} 伪装路径为： ${camouflage}"
+            echo -e "${OK} ${GreenBG} 伪装路径为： ${camouflage} ${Font}"
             ;;
         *)
             #生成伪装路径
             camouflage="/$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})/"
-            echo -e "${OK} ${GreenBG} 伪装路径为： ${camouflage}"
+            echo -e "${OK} ${GreenBG} 伪装路径为： ${camouflage} ${Font}"
             ;;
         esac
     fi
@@ -310,7 +310,7 @@ UUID_set() {
         UUID="$(info_extraction '\"id\"')"
         UUID5_char="$(info_extraction '\"id\"')"
     else
-        echo -e "${OK} ${GreenBG} 是否需要自定义字符串映射为UUIDv5 [Y/N]? ${Font}"
+        echo -e "${GreenBG} 是否需要自定义字符串映射为UUIDv5 [Y/N]? ${Font}"
         read -r need_UUID5
         case $need_UUID5 in
         [yY][eE][sS] | [yY])
@@ -713,7 +713,7 @@ xray_conf_add_xtls() {
 
 old_config_exist_check() {
     if [[ -f $xray_qr_config_file ]]; then
-        echo -e "${OK} ${GreenBG} 检测到旧配置文件，是否读取旧文件配置 [Y/N]? ${Font}"
+        echo -e "${GreenBG} 检测到旧配置文件，是否读取旧文件配置 [Y/N]? ${Font}"
         read -r ssl_delete
         case $ssl_delete in
         [yY][eE][sS] | [yY])
@@ -919,7 +919,7 @@ vless_qr_link_image() {
     else
         vless_link="vless://$(info_extraction '\"id\"')@$(vless_urlquote $(info_extraction '\"add\"')):$(info_extraction '\"port\"')?security=xtls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct#$(vless_urlquote $(info_extraction '\"add\"'))+xtls%E5%8D%8F%E8%AE%AE"
     fi
-    echo -e "${OK} ${YellowBG} VLESS 目前分享链接规范为实验阶段，请自行判断是否适用 ${Font}"
+    echo -e "${YellowBG} VLESS 目前分享链接规范为实验阶段，请自行判断是否适用 ${Font}"
         {
             echo -e "$Red 二维码: $Font"
             echo -n "${vless_link}" | qrencode -o - -t utf8
@@ -992,7 +992,7 @@ show_information() {
 ssl_judge_and_install() {
     if [[ -f "/data/xray.key" || -f "/data/xray.crt" ]]; then
         echo "/data 目录下证书文件已存在"
-        echo -e "${OK} ${GreenBG} 是否删除 [Y/N]? ${Font}"
+        echo -e "${GreenBG} 是否删除 [Y/N]? ${Font}"
         read -r ssl_delete
         case $ssl_delete in
         [yY][eE][sS] | [yY])
@@ -1099,7 +1099,7 @@ uninstall_all() {
     [[ -d $xray_systemd_filed2 ]] && rm -rf $xray_systemd_filed2
     [[ -f $xray_bin_dir ]] && rm -rf $xray_bin_dir
     if [[ -d $nginx_dir ]]; then
-        echo -e "${OK} ${Green} 是否卸载 Nginx [Y/N]? ${Font}"
+        echo -e "${Green} 是否卸载 Nginx [Y/N]? ${Font}"
         read -r uninstall_nginx
         case $uninstall_nginx in
         [yY][eE][sS] | [yY])
@@ -1198,7 +1198,7 @@ update_sh() {
     echo "$ol_version" >$version_cmp
     echo "$shell_version" >>$version_cmp
     if [[ "$shell_version" < "$(sort -rV $version_cmp | head -1)" ]]; then
-        echo -e "${OK} ${GreenBG} 存在新版本，是否更新 [Y/N]? ${Font}"
+        echo -e "${GreenBG} 存在新版本，是否更新 [Y/N]? ${Font}"
         read -r update_confirm
         case $update_confirm in
         [yY][eE][sS] | [yY])
