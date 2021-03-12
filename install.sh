@@ -1152,13 +1152,13 @@ install_xray_ws_tls() {
     nginx_exist_check
     xray_conf_add_tls
     nginx_conf_add
+    tls_type
     web_camouflage
     ssl_judge_and_install
     nginx_systemd
     vless_qr_config_tls_ws
     basic_information
     vless_link_image_choice
-    tls_type
     show_information
     start_process_systemd
     enable_process_systemd
