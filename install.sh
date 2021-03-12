@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.0.5"
+shell_version="1.4.0.6"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -274,7 +274,8 @@ firewall_set() {
         firewall-cmd --permanent --add-port=80/tcp
         firewall-cmd --permanent --add-port=443/tcp
         firewall-cmd --permanent --add-port=1024-65535/udp
-        firewall-cmd --permanent --add-port=${port}
+        firewall-cmd --permanent --add-port=${port}/tcp
+        firewall-cmd --permanent --add-port=${port}/udp
         firewall-cmd --reload
     else
         ufw allow 80,443/tcp
