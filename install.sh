@@ -392,7 +392,7 @@ modify_nginx_other() {
 modify_path() {
     judge "Xray 伪装路径 修改"
     if [[ "$shell_mode" != "xtls" ]]; then
-        sed -i "/\"path\"/c \\\t\\t\"path\":\"${camouflage}\"" ${xray_conf}
+        sed -i "/\"path\"/c \                \"path\":\"${camouflage}\"" ${xray_conf}
     else
         echo -e "${Warning} ${YellowBG} xtls 不支持 path ${Font}"
     fi
