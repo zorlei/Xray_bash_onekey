@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.1.3"
+shell_version="1.4.1.4"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -118,7 +118,7 @@ judge() {
         echo -e "${OK} ${GreenBG} $1 完成 ${Font}"
         sleep 1
     else
-        echo -e "${Error} ${RedBG} $1 失败${Font}"
+        echo -e "${Error} ${RedBG} $1 失败 ${Font}"
         exit 1
     fi
 }
@@ -148,7 +148,7 @@ dependency_install() {
         systemctl start cron && systemctl enable cron
 
     fi
-    judge "crontab 自启动配置 "
+    judge "crontab 自启动配置"
 
     ${INS} -y install bc
     judge "安装 bc"
@@ -310,7 +310,6 @@ modify_alterid() {
 }
 
 modify_inbound_port() {
-    judge "Xray inbound_port 修改"
     if [[ "on" == "$old_config_status" ]]; then
         port="$(info_extraction '\"port\"')"
     fi
@@ -322,18 +321,19 @@ modify_inbound_port() {
         #        sed -i "/\"port\"/c  \    \"port\":${port}," ${xray_conf}
         sed -i "8c\        \"port\":${port}," ${xray_conf}
     fi
-    echo -e "${OK} ${GreenBG} inbound_port:${port} 设置成功 ${Font}"
+    judge "Xray inbound_port 修改"
+    echo -e "${OK} ${GreenBG} inbound_port:${port} ${Font}"
 }
 
 modify_nginx_port() {
-    judge "Xray port 修改"
     if [[ "on" == "$old_config_status" ]]; then
         port="$(info_extraction '\"port\"')"
     fi
     sed -i "/ssl http2;$/c \\\t\\tlisten ${port} ssl http2;" ${nginx_conf}
     sed -i "4c \\\t\\tlisten [::]:${port} ssl http2;" ${nginx_conf}
     [ -f ${xray_qr_config_file} ] && sed -i "/\"port\"/c \\  \"port\": \"${port}\"," ${xray_qr_config_file}
-    echo -e "${OK} ${GreenBG} 端口号:${port} 设置成功 ${Font}"
+    judge "Xray port 修改"
+    echo -e "${OK} ${GreenBG} 端口号:${port} ${Font}"
 }
 
 modify_nginx_other() {
@@ -352,21 +352,21 @@ modify_nginx_other() {
 }
 
 modify_path() {
-    judge "Xray 伪装路径 修改"
     if [[ "$shell_mode" != "xtls" ]]; then
         sed -i "/\"path\"/c \                \"path\":\"${camouflage}\"" ${xray_conf}
     else
         echo -e "${Warning} ${YellowBG} xtls 不支持 path ${Font}"
     fi
-    echo -e "${OK} ${GreenBG} 伪装路径:${camouflage} 设置成功 ${Font}"
+    judge "Xray 伪装路径 修改"
+    echo -e "${OK} ${GreenBG} 伪装路径:${camouflage} ${Font}"
 }
 
 modify_UUID() {
-    judge "Xray UUID 修改"
     sed -i "/\"id\"/c \                \"id\":\"${UUID}\"," ${xray_conf}
     [ -f ${xray_qr_config_file} ] && sed -i "/\"id\"/c \\  \"id\": \"${UUID}\"," ${xray_qr_config_file}
     [ -f ${xray_qr_config_file} ] && sed -i "/\"idc\"/c \\  \"idc\": \"${UUID5_char}\"," ${xray_qr_config_file}
-    echo -e "${OK} ${GreenBG} UUID:${UUID} 设置成功 ${Font}"
+    judge "Xray UUID 修改"
+    echo -e "${OK} ${GreenBG} UUID:${UUID} ${Font}"
 }
 
 web_camouflage() {
