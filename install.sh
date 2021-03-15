@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.1.7"
+shell_version="1.4.1.8"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -884,9 +884,9 @@ vless_qr_link_image() {
     fi
     echo -e "${Warning} ${YellowBG} VLESS 目前分享链接规范为实验阶段，请自行判断是否适用 ${Font}"
         {
+            echo -e "${Red} URL分享链接: ${vless_link} ${Font}"
             echo -e "$Red 二维码: $Font"
             echo -n "${vless_link}" | qrencode -o - -t utf8
-            echo -e "${Red} URL分享链接: ${vless_link} ${Font}"
         } >>"${xray_info_file}"
 }
 
@@ -930,20 +930,20 @@ basic_information() {
             echo -e "${OK} ${GreenBG} Xray+Nginx 安装成功 ${Font}"
         fi
         echo -e "${Red} Xray 配置信息 ${Font}"
-        echo -e "${Red} 地址（address）: ${Font} $(info_extraction '\"add\"') "
-        echo -e "${Red} 端口（port）: ${Font} $(info_extraction '\"port\"') "
-        echo -e "${Red} UUIDv5映射字符串: ${Font} $(info_extraction '\"idc\"')"
-        echo -e "${Red} 用户id（UUID）: ${Font} $(info_extraction '\"id\"')"
+        echo -e "${Red} 地址（address）:${Font} $(info_extraction '\"add\"') "
+        echo -e "${Red} 端口（port）:${Font} $(info_extraction '\"port\"') "
+        echo -e "${Red} UUIDv5映射字符串:${Font} $(info_extraction '\"idc\"')"
+        echo -e "${Red} 用户id（UUID）:${Font} $(info_extraction '\"id\"')"
 
-        echo -e "${Red} 加密（encryption）: ${Font} none "
-        echo -e "${Red} 传输协议（network）: ${Font} $(info_extraction '\"net\"') "
-        echo -e "${Red} 伪装类型（type）: ${Font} none "
+        echo -e "${Red} 加密（encryption）:${Font} none "
+        echo -e "${Red} 传输协议（network）:${Font} $(info_extraction '\"net\"') "
+        echo -e "${Red} 伪装类型（type）:${Font} none "
         if [[ "$shell_mode" != "xtls" ]]; then
-            echo -e "${Red} 路径（不要落下/）: ${Font} $(info_extraction '\"path\"') "
-            echo -e "${Red} 底层传输安全: ${Font} tls "
+            echo -e "${Red} 路径（不要落下/）:${Font} $(info_extraction '\"path\"') "
+            echo -e "${Red} 底层传输安全:${Font} tls "
         else
-            echo -e "${Red} 流控（flow）: ${Font} xtls-rprx-direct "
-            echo -e "${Red} 底层传输安全: ${Font} xtls "
+            echo -e "${Red} 流控（flow）:${Font} xtls-rprx-direct "
+            echo -e "${Red} 底层传输安全:${Font} xtls "
         fi
     } >"${xray_info_file}"
 }
