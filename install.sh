@@ -362,9 +362,9 @@ modify_path() {
 }
 
 modify_UUID() {
-    sed -i "/\"id\"/c \\                \"id\":\"${UUID}\"," ${xray_conf}
-    [ -f ${xray_qr_config_file} ] && sed -i "/\"id\"/c \\  \"id\": \"${UUID}\"," ${xray_qr_config_file}
-    [ -f ${xray_qr_config_file} ] && sed -i "/\"idc\"/c \\  \"idc\": \"${UUID5_char}\"," ${xray_qr_config_file}
+    sed -i "/\"id\"/c \                \"id\":\"${UUID}\"," ${xray_conf}
+    [ -f ${xray_qr_config_file} ] && sed -i "/\"id\"/c \  \"id\": \"${UUID}\"," ${xray_qr_config_file}
+    [ -f ${xray_qr_config_file} ] && sed -i "/\"idc\"/c \  \"idc\": \"${UUID5_char}\"," ${xray_qr_config_file}
     judge "Xray UUID 修改"
     echo -e "${OK} ${GreenBG} UUIDv5: ${UUID} ${Font}"
 }
