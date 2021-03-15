@@ -930,19 +930,19 @@ basic_information() {
             echo -e "${OK} ${GreenBG} Xray+Nginx 安装成功 ${Font}"
         fi
         echo -e "${Red} Xray 配置信息 ${Font}"
-        echo -e "${Red} 地址（address）:${Font} $(info_extraction '\"add\"') "
-        echo -e "${Red} 端口（port）:${Font} $(info_extraction '\"port\"') "
+        echo -e "${Red} 地址 (address):${Font} $(info_extraction '\"add\"') "
+        echo -e "${Red} 端口 (port):${Font} $(info_extraction '\"port\"') "
         echo -e "${Red} UUIDv5映射字符串:${Font} $(info_extraction '\"idc\"')"
-        echo -e "${Red} 用户id（UUID）:${Font} $(info_extraction '\"id\"')"
+        echo -e "${Red} 用户id (UUID):${Font} $(info_extraction '\"id\"')"
 
-        echo -e "${Red} 加密（encryption）:${Font} none "
-        echo -e "${Red} 传输协议（network）:${Font} $(info_extraction '\"net\"') "
-        echo -e "${Red} 伪装类型（type）:${Font} none "
+        echo -e "${Red} 加密 (encryption):${Font} none "
+        echo -e "${Red} 传输协议 (network):${Font} $(info_extraction '\"net\"') "
+        echo -e "${Red} 伪装类型 (type):${Font} none "
         if [[ "$shell_mode" != "xtls" ]]; then
-            echo -e "${Red} 路径（不要落下/）:${Font} $(info_extraction '\"path\"') "
+            echo -e "${Red} 路径 (不要落下/):${Font} $(info_extraction '\"path\"') "
             echo -e "${Red} 底层传输安全:${Font} tls "
         else
-            echo -e "${Red} 流控（flow）:${Font} xtls-rprx-direct "
+            echo -e "${Red} 流控 (flow):${Font} xtls-rprx-direct "
             echo -e "${Red} 底层传输安全:${Font} xtls "
         fi
     } >"${xray_info_file}"
