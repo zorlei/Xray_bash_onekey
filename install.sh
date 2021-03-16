@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.1.8"
+shell_version="1.4.1.9"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -257,11 +257,11 @@ path_set() {
         case $path_modify_fq in
         [yY][eE][sS] | [yY])
             read -rp "请输入自定义伪装路径(不需要“/”):" camouflage
-            camouflage="/${camouflage}/"
+            camouflage="/${camouflage}"
             echo -e "${OK} ${GreenBG} 伪装路径为: ${camouflage} ${Font}"
             ;;
         *)
-            camouflage="/$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})/"
+            camouflage="/$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})"
             echo -e "${OK} ${GreenBG} 伪装路径为: ${camouflage} ${Font}"
             ;;
         esac
