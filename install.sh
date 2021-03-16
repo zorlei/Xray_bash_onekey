@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.1.10"
+shell_version="1.4.1.11"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -216,16 +216,16 @@ basic_optimization() {
 
 port_alterid_set() {
     if [[ "on" != "$old_config_status" ]]; then
-        read -rp "请输入连接端口（default:443）:" port
+        read -rp "请输入连接端口 (default:443):" port
         [[ -z ${port} ]] && port="443"
-        read -rp "请输入alterID（default:0 仅允许填数字）:" alterID
+        read -rp "请输入alterID (default:0 仅允许填数字):" alterID
         [[ -z ${alterID} ]] && alterID="0"
     fi
 }
 
 port_set() {
     if [[ "on" != "$old_config_status" ]]; then
-        read -rp "请输入连接端口（default:443）:" port
+        read -rp "请输入连接端口 (default:443):" port
         [[ -z ${port} ]] && port="443"
     fi
 }
@@ -277,7 +277,7 @@ UUID_set() {
         read -r need_UUID5
         case $need_UUID5 in
         [yY][eE][sS] | [yY])
-            read -rp "请输入自定义字符串（最多30字符）:" UUID5_char
+            read -rp "请输入自定义字符串 (最多30字符):" UUID5_char
             UUID=$(UUIDv5_tranc ${UUID5_char})
             echo -e "${OK} ${GreenBG} 自定义字符串: ${UUID5_char} ${Font}"
             echo -e "${OK} ${GreenBG} UUIDv5: ${UUID} ${Font}"
@@ -1006,9 +1006,9 @@ EOF
 
 tls_type() {
     if [[ -f "/etc/nginx/sbin/nginx" ]] && [[ -f "$nginx_conf" ]] && [[ "$shell_mode" == "ws" ]]; then
-        echo "请选择支持的 TLS 版本（default:2）:"
+        echo "请选择支持的 TLS 版本 (default:2):"
         echo "建议选择 TLS1.2 and TLS1.3 (兼容模式)"
-        echo "1: TLS1.1 TLS1.2 and TLS1.3（兼容模式）"
+        echo "1: TLS1.1 TLS1.2 and TLS1.3 (兼容模式)"
         echo "2: TLS1.2 and TLS1.3 (兼容模式)"
         echo "3: TLS1.3 only"
         read -rp "请输入: " tls_version
