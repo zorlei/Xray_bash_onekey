@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.1.11"
+shell_version="1.4.1.12"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -1114,10 +1114,10 @@ install_xray_ws_tls() {
     nginx_exist_check
     xray_conf_add_tls
     nginx_conf_add
-    tls_type
     web_camouflage
     ssl_judge_and_install
     nginx_systemd
+    tls_type
     vless_qr_config_tls_ws
     basic_information
     vless_link_image_choice
