@@ -887,6 +887,7 @@ vless_qr_link_image() {
             echo -e "${Red} URL分享链接: ${vless_link} ${Font}"
             echo -e "$Red 二维码: $Font"
             echo -n "${vless_link}" | qrencode -o - -t utf8
+            echo -e "\n"
         } >>"${xray_info_file}"
 }
 
