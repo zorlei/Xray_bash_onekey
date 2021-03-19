@@ -31,7 +31,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.2.0"
+shell_version="1.4.2.1"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -355,7 +355,7 @@ modify_path() {
     if [[ "$shell_mode" != "xtls" ]]; then
         sed -i "/\"path\"/c \                \"path\":\"${camouflage}\"" ${xray_conf}
     else
-        echo -e "${Warning} ${YellowBG} xtls 不支持 path ${Font}"
+        echo -e "${Warning} ${YellowBG} XTLS 不支持 path ${Font}"
     fi
     judge "Xray 伪装路径 修改"
     echo -e "${OK} ${GreenBG} 伪装路径: ${camouflage} ${Font}"
@@ -864,7 +864,7 @@ vless_qr_config_xtls() {
   "net": "tcp",
   "type": "none",
   "host": "${domain}",
-  "tls": "xtls"
+  "tls": "XTLS"
 }
 EOF
 }
@@ -926,9 +926,9 @@ info_extraction() {
 basic_information() {
     {
         if [[ "$shell_mode" != "xtls" ]]; then
-            echo -e "${OK} ${GreenBG} Xray+ws+tls 安装成功 ${Font}"
+            echo -e "${OK} ${GreenBG} Xray+Nginx+ws+tls 安装成功 ${Font}"
         else
-            echo -e "${OK} ${GreenBG} Xray+Nginx 安装成功 ${Font}"
+            echo -e "${OK} ${GreenBG} Xray+XTLS+Nginx 安装成功 ${Font}"
         fi
         echo -e "${Red} Xray 配置信息 ${Font}"
         echo -e "${Red} 地址 (address):${Font} $(info_extraction '\"add\"') "
@@ -944,7 +944,7 @@ basic_information() {
             echo -e "${Red} 底层传输安全:${Font} tls "
         else
             echo -e "${Red} 流控 (flow):${Font} xtls-rprx-direct "
-            echo -e "${Red} 底层传输安全:${Font} xtls "
+            echo -e "${Red} 底层传输安全:${Font} XTLS "
         fi
     } >"${xray_info_file}"
 }
@@ -1045,8 +1045,11 @@ ssl_update_manuel() {
 }
 
 bbr_boost_sh() {
-    [ -f "tcp.sh" ] && rm -rf ./tcp.sh
-    wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
+    if [[ -f "tcp.sh" ]]; then 
+        chmod +x tcp.sh && ./tcp.sh
+    else    
+        wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
+    fi
 }
 
 mtproxy_sh() {
@@ -1233,20 +1236,20 @@ menu() {
     echo -e "—————————————— 安装向导 ——————————————"
     echo -e "${Green}0.${Font}  升级 脚本"
     echo -e "${Green}1.${Font}  安装 Xray (Nginx+ws+tls)"
-    echo -e "${Green}2.${Font}  安装 Xray (xtls+Nginx)"
+    echo -e "${Green}2.${Font}  安装 Xray (XTLS+Nginx)"
     echo -e "${Green}3.${Font}  升级 Xray"
     echo -e "—————————————— 配置变更 ——————————————"
     echo -e "${Green}4.${Font}  变更 UUIDv5/映射字符串"
     echo -e "${Green}5.${Font}  变更 alterid"
     echo -e "${Green}6.${Font}  变更 port"
-    echo -e "${Green}7.${Font}  变更 TLS 版本(仅ws+tls有效)"
+    echo -e "${Green}7.${Font}  变更 TLS 版本 (仅ws+tls有效)"
     echo -e "—————————————— 查看信息 ——————————————"
     echo -e "${Green}8.${Font}  查看 实时访问日志"
     echo -e "${Green}9.${Font}  查看 实时错误日志"
     echo -e "${Green}10.${Font} 查看 Xray 配置信息"
     echo -e "—————————————— 其他选项 ——————————————"
-    echo -e "${Green}11.${Font} 安装 4合1 bbr 锐速安装脚本"
-    echo -e "${Green}12.${Font} 安装 MTproxy(支持TLS混淆)"
+    echo -e "${Green}11.${Font} 安装 TCP加速脚本"
+    echo -e "${Green}12.${Font} 安装 MTproxy (支持TLS混淆)"
     echo -e "${Green}13.${Font} 证书 有效期更新"
     echo -e "${Green}14.${Font} 卸载 Xray"
     echo -e "${Green}15.${Font} 更新 证书crontab计划任务"
