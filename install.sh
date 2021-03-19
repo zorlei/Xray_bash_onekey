@@ -41,6 +41,7 @@ xray_conf="${xray_conf_dir}/config.json"
 nginx_conf="${nginx_conf_dir}/xray.conf"
 idleleo_xray_dir="/usr/bin/idleleo-xray"
 idleleo_commend_file="/usr/bin/idleleo"
+ssl_chainpath="${idleleo_xray_dir}/data"
 nginx_dir="/etc/nginx"
 web_dir="/home/wwwroot"
 nginx_openssl_src="/usr/local/src"
@@ -384,7 +385,7 @@ xray_privilege_escalation() {
         #sed -i "s/User=nobody/User=root/" ${xray_systemd_file}
         chmod -fR a+rw /var/log/xray/
         chown -fR nobody:${cert_group} /var/log/xray/
-        chown -R nobody:${cert_group} ${idleleo_xray_dir}/data/*
+        chown -R nobody:${cert_group} ${ssl_chainpath}/*
         systemctl daemon-reload
         systemctl start xray
         sleep 1
@@ -637,11 +638,11 @@ acme() {
     if "$HOME"/.acme.sh/acme.sh --issue -d "${domain}" --standalone -k ec-256 --force; then
         echo -e "${OK} ${GreenBG} SSL 证书生成成功 ${Font}"
         sleep 2
-        mkdir ${idleleo_xray_dir}/data
-        if "$HOME"/.acme.sh/acme.sh --installcert -d "${domain}" --fullchainpath ${idleleo_xray_dir}/data/xray.crt --keypath ${idleleo_xray_dir}/data/xray.key --ecc --force; then
-            chmod -f a+rw ${idleleo_xray_dir}/data/xray.crt
-            chmod -f a+rw ${idleleo_xray_dir}/data/xray.key
-            chown -R nobody:${cert_group} ${idleleo_xray_dir}/data/*
+        mkdir ${ssl_chainpath}
+        if "$HOME"/.acme.sh/acme.sh --installcert -d "${domain}" --fullchainpath ${ssl_chainpath}/xray.crt --keypath ${ssl_chainpath}/xray.key --ecc --force; then
+            chmod -f a+rw ${ssl_chainpath}/xray.crt
+            chmod -f a+rw ${ssl_chainpath}/xray.key
+            chown -R nobody:${cert_group} ${ssl_chainpath}/*
             echo -e "${OK} ${GreenBG} 证书配置成功 ${Font}"
             sleep 2
         fi
@@ -937,14 +938,14 @@ show_information() {
 }
 
 ssl_judge_and_install() {
-    if [[ -f "/usr/bin/idleleo-xray/data/xray.key" || -f "/usr/bin/idleleo-xray/data/xray.crt" ]]; then
+    if [[ -f "${ssl_chainpath}/xray.key" || -f "${ssl_chainpath}/xray.crt" ]]; then
         echo "证书文件已存在"
         echo -e "${GreenBG} 是否删除 [Y/N]? ${Font}"
         read -r ssl_delete
         case $ssl_delete in
         [yY][eE][sS] | [yY])
             delete_tls_key_and_crt
-            rm -rf ${idleleo_xray_dir}/data/*
+            rm -rf ${ssl_chainpath}/*
             echo -e "${OK} ${GreenBG} 已删除 ${Font}"
             ;;
         *) ;;
@@ -952,11 +953,11 @@ ssl_judge_and_install() {
         esac
     fi
 
-    if [[ -f "/usr/bin/idleleo-xray/data/xray.key" || -f "/usr/bin/idleleo-xray/data/xray.crt" ]]; then
+    if [[ -f "${ssl_chainpath}/xray.key" || -f "${ssl_chainpath}/xray.crt" ]]; then
         echo "证书文件已存在"
     elif [[ -f "$HOME/.acme.sh/${domain}_ecc/${domain}.key" && -f "$HOME/.acme.sh/${domain}_ecc/${domain}.cer" ]]; then
         echo "证书文件已存在"
-        "$HOME"/.acme.sh/acme.sh --installcert -d "${domain}" --fullchainpath ${idleleo_xray_dir}/data/xray.crt --keypath ${idleleo_xray_dir}/data/xray.key --ecc
+        "$HOME"/.acme.sh/acme.sh --installcert -d "${domain}" --fullchainpath ${ssl_chainpath}/xray.crt --keypath ${ssl_chainpath}/xray.key --ecc
         judge "证书应用"
     else
         ssl_install
@@ -1024,7 +1025,7 @@ show_error_log() {
 ssl_update_manuel() {
     [ -f ${amce_sh_file} ] && "/root/.acme.sh"/acme.sh --cron --home "/root/.acme.sh" || echo -e "${Error} ${RedBG} 证书签发工具不存在，请确认你是否使用了自己的证书 ${Font}"
     domain="$(info_extraction '\"add\"')"
-    "$HOME"/.acme.sh/acme.sh --installcert -d "${domain}" --fullchainpath ${idleleo_xray_dir}/data/xray.crt --keypath ${idleleo_xray_dir}/data/xray.key --ecc
+    "$HOME"/.acme.sh/acme.sh --installcert -d "${domain}" --fullchainpath ${ssl_chainpath}/xray.crt --keypath ${ssl_chainpath}/xray.key --ecc
 }
 
 bbr_boost_sh() {
