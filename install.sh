@@ -32,7 +32,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.3.1"
+shell_version="1.4.3.2"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -1029,10 +1029,10 @@ ssl_update_manuel() {
 }
 
 bbr_boost_sh() {
-    if [[ -f "tcp.sh" ]]; then 
-        chmod +x tcp.sh && ./tcp.sh
+    if [[ -f "${idleleo_xray_dir}/tcp.sh" ]]; then 
+        chmod +x ${idleleo_xray_dir}/tcp.sh && ./${idleleo_xray_dir}/tcp.sh
     else    
-        wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
+        wget -N --no-check-certificate -P ${idleleo_xray_dir} "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x ${idleleo_xray_dir}/tcp.sh && .${idleleo_xray_dir}/tcp.sh
     fi
 }
 
@@ -1077,7 +1077,7 @@ judge_mode() {
     if [ -f $xray_bin_dir ]; then
         if grep -q "ws" $xray_qr_config_file; then
             shell_mode="ws"
-        elif grep -q "xtls" $xray_qr_config_file; then
+        elif grep -q "XTLS" $xray_qr_config_file; then
             shell_mode="xtls"
         fi
     fi
