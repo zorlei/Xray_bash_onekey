@@ -1248,7 +1248,7 @@ menu() {
     echo -e "${Green}9.${Font}  查看 实时错误日志"
     echo -e "${Green}10.${Font} 查看 Xray 配置信息"
     echo -e "—————————————— 其他选项 ——————————————"
-    echo -e "${Green}11.${Font} 安装 TCP加速脚本"
+    echo -e "${Green}11.${Font} 安装 TCP 加速脚本"
     echo -e "${Green}12.${Font} 安装 MTproxy (支持TLS混淆)"
     echo -e "${Green}13.${Font} 证书 有效期更新"
     echo -e "${Green}14.${Font} 卸载 Xray"
