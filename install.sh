@@ -32,7 +32,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.3.7"
+shell_version="1.4.3.8"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -271,20 +271,20 @@ path_set() {
 UUID_set() {
     if [[ "on" == "$old_config_status" ]]; then
         UUID="$(info_extraction '\"id\"')"
-        UUID5_char="$(info_extraction '\"id\"')"
+        UUID5_char="$(info_extraction '\"idc\"')"
     else
         echo -e "${GreenBG} 是否需要自定义字符串映射为UUIDv5 [Y/N]? ${Font}"
         read -r need_UUID5
         case $need_UUID5 in
         [yY][eE][sS] | [yY])
             read -rp "请输入自定义字符串 (最多30字符):" UUID5_char
-            UUID=$(UUIDv5_tranc ${UUID5_char})
+            UUID="$(UUIDv5_tranc ${UUID5_char})"
             echo -e "${OK} ${GreenBG} 自定义字符串: ${UUID5_char} ${Font}"
             echo -e "${OK} ${GreenBG} UUIDv5: ${UUID} ${Font}"
             ;;
         [nN][oO] | [nN] | *)
             UUID5_char="$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})"
-            UUID=$(UUIDv5_tranc ${UUID5_char})
+            UUID="$(UUIDv5_tranc ${UUID5_char})"
             echo -e "${OK} ${GreenBG} UUID映射字符串: ${UUID5_char} ${Font}"
             echo -e "${OK} ${GreenBG} UUIDv5: ${UUID} ${Font}"
             #[ -z "$UUID" ] && UUID=$(cat /proc/sys/kernel/random/uuid)
