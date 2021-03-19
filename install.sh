@@ -32,8 +32,9 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.3.5"
+shell_version="1.4.3.6"
 shell_mode="None"
+shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
 nginx_conf_dir="/etc/nginx/conf/conf.d"
@@ -1077,8 +1078,10 @@ judge_mode() {
     if [ -f $xray_bin_dir ]; then
         if grep -q "ws" $xray_qr_config_file; then
             shell_mode="ws"
+            shell_mode_show="Nginx+ws+tls"
         elif grep -q "XTLS" $xray_qr_config_file; then
             shell_mode="xtls"
+            shell_mode_show="XTLS+Nginx"
         fi
     fi
 }
@@ -1212,7 +1215,7 @@ menu() {
     echo -e "---authored by paniy---"
     echo -e "---changed by www.idleleo.com---"
     echo -e "https://github.com/paniy\n"
-    echo -e "当前已安装版本:${shell_mode}\n"
+    echo -e "当前已安装版本: ${shell_mode_show}\n"
 
     idleleo_commend
 
