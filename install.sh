@@ -926,10 +926,10 @@ basic_information() {
         echo -e "${Red} 伪装类型 (type):${Font} none "
         if [[ "$shell_mode" != "xtls" ]]; then
             echo -e "${Red} 路径 (不要落下/):${Font} $(info_extraction '\"path\"') "
-            echo -e "${Red} 底层传输安全协议:${Font} tls "
+            echo -e "${Red} 底层传输安全 (tls):${Font} tls "
         else
             echo -e "${Red} 流控 (flow):${Font} xtls-rprx-direct "
-            echo -e "${Red} 底层传输安全协议:${Font} XTLS "
+            echo -e "${Red} 底层传输安全 (tls):${Font} XTLS "
         fi
     } >"${xray_info_file}"
 }
