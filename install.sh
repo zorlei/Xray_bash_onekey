@@ -1242,7 +1242,6 @@ menu() {
     read -rp "请输入数字: " menu_num
     case $menu_num in
     0)
-        update_sh
         bash idleleo
         ;;
     1)
