@@ -15,8 +15,8 @@ idleleo_commend_file="/usr/bin/idleleo"
 if [[ $(grep "nogroup" /etc/group) ]]; then
     cert_group="nogroup"
 fi
-chmod -f a+rw /data/xray.crt
-chmod -f a+rw /data/xray.key
+chmod -f a+rw ${idleleo_commend_file}/data/xray.crt
+chmod -f a+rw ${idleleo_commend_file}/data/xray.key
 chown -R nobody:${cert_group} ${idleleo_commend_file}/data/*
 sleep 1
 systemctl start nginx &> /dev/null
