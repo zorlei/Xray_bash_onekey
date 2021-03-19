@@ -32,7 +32,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.3.0"
+shell_version="1.4.3.1"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -638,7 +638,7 @@ acme() {
     if "$HOME"/.acme.sh/acme.sh --issue -d "${domain}" --standalone -k ec-256 --force; then
         echo -e "${OK} ${GreenBG} SSL 证书生成成功 ${Font}"
         sleep 2
-        mkdir ${ssl_chainpath}
+        mkdir -p ${ssl_chainpath}
         if "$HOME"/.acme.sh/acme.sh --installcert -d "${domain}" --fullchainpath ${ssl_chainpath}/xray.crt --keypath ${ssl_chainpath}/xray.key --ecc --force; then
             chmod -f a+rw ${ssl_chainpath}/xray.crt
             chmod -f a+rw ${ssl_chainpath}/xray.key
