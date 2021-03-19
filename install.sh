@@ -1158,6 +1158,7 @@ update_sh() {
             wget -N --no-check-certificate -P ${idleleo_xray_dir} https://raw.githubusercontent.com/paniy/Xray_bash_onekey/main/install.sh && chmod +x ${idleleo_xray_dir}/install.sh
             ln -s ${idleleo_xray_dir}/install.sh ${idleleo_commend_file}
             echo -e "${OK} ${GreenBG} 更新完成 ${Font}"
+            exit 0
             ;;
         *) ;;
 
