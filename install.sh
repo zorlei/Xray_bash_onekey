@@ -32,7 +32,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.3.3"
+shell_version="1.4.3.4"
 shell_mode="None"
 version_cmp="/tmp/version_cmp.tmp"
 xray_conf_dir="/usr/local/etc/xray"
@@ -1030,9 +1030,9 @@ ssl_update_manuel() {
 
 bbr_boost_sh() {
     if [[ -f "${idleleo_xray_dir}/tcp.sh" ]]; then 
-        chmod +x ${idleleo_xray_dir}/tcp.sh && .${idleleo_xray_dir}/tcp.sh
+        chmod +x ${idleleo_xray_dir}/tcp.sh && ${idleleo_xray_dir}/tcp.sh
     else    
-        wget -N --no-check-certificate -P ${idleleo_xray_dir} "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x ${idleleo_xray_dir}/tcp.sh && .${idleleo_xray_dir}/tcp.sh
+        wget -N --no-check-certificate -P ${idleleo_xray_dir} "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x ${idleleo_xray_dir}/tcp.sh && ${idleleo_xray_dir}/tcp.sh
     fi
 }
 
