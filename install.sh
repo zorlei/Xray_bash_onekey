@@ -32,7 +32,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.5.2"
+shell_version="1.4.5.3"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -870,8 +870,7 @@ vless_qr_link_image() {
     fi
     echo -e "${Warning} ${YellowBG} VLESS 目前分享链接规范为实验阶段，请自行判断是否适用 ${Font}"
         {
-            echo -e "${Red} Xray 配置分享 ${Font}"
-            echo -e "\n"
+            echo -e "${Red} —————————————— Xray 配置分享 —————————————— ${Font}"
             echo -e "${Red} URL分享链接: ${vless_link} ${Font}"
             echo -e "$Red 二维码: $Font"
             echo -n "${vless_link}" | qrencode -o - -t utf8
@@ -918,8 +917,8 @@ basic_information() {
         else
             echo -e "${OK} ${GreenBG} Xray+XTLS+Nginx 安装成功 ${Font}"
         fi
-        echo -e "${Red} Xray 配置信息 ${Font}"
         echo -e "\n"
+        echo -e "${Red} —————————————— Xray 配置信息 —————————————— ${Font}"
         echo -e "${Red} 地址 (address):${Font} $(info_extraction '\"add\"') "
         echo -e "${Red} 端口 (port):${Font} $(info_extraction '\"port\"') "
         echo -e "${Red} UUIDv5映射字符串:${Font} $(info_extraction '\"idc\"')"
@@ -935,7 +934,6 @@ basic_information() {
             echo -e "${Red} 流控 (flow):${Font} xtls-rprx-direct "
             echo -e "${Red} 底层传输安全 (tls):${Font} XTLS "
         fi
-        echo -e "\n"
     } >"${xray_info_file}"
 }
 
