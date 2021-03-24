@@ -920,7 +920,7 @@ basic_information() {
         echo -e "\n${Red} —————————————— Xray 配置信息 —————————————— ${Font}"
         echo -e "${Red} 地址 (address):${Font} $(info_extraction '\"add\"') "
         echo -e "${Red} 端口 (port):${Font} $(info_extraction '\"port\"') "
-        echo -e "${Red} UUIDv5映射字符串:${Font} $(info_extraction '\"idc\"')"
+        echo -e "${Red} UUIDv5 映射字符串:${Font} $(info_extraction '\"idc\"')"
         echo -e "${Red} 用户id (UUID):${Font} $(info_extraction '\"id\"')"
 
         echo -e "${Red} 加密 (encryption):${Font} none "
