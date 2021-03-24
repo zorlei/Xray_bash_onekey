@@ -32,7 +32,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.3.8"
+shell_version="1.4.3.9"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -579,13 +579,13 @@ domain_check() {
     [[ -z ${ip_version} ]] && ip_version=1
     echo -e "${OK} ${GreenBG} 正在获取 公网IP 信息，请耐心等待 ${Font}"
     if [[ $ip_version == 1 ]]; then
-        local_ip=$(curl https://api-ipv4.ip.sb/ip)
+        local_ip=$(curl -4 ip.sb)
         domain_ip=$(ping -4 "${domain}" -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
     elif [[ $ip_version == 2 ]]; then
-        local_ip=$(curl https://api-ipv6.ip.sb/ip)
+        local_ip=$(curl -6 ip.sb)
         domain_ip=$(ping -6 "${domain}" -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
     else
-        local_ip=$(curl https://api-ipv4.ip.sb/ip)
+        local_ip=$(curl -4 ip.sb)
         domain_ip=$(ping -4 "${domain}" -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
     fi
     echo -e "域名dns解析IP: ${domain_ip}"
