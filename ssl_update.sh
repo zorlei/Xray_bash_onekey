@@ -5,7 +5,7 @@ export PATH
 cert_group="nobody"
 idleleo_xray_dir="/etc/idleleo"
 ssl_chainpath="${idleleo_xray_dir}/cert"
-xray_qr_config_file="${idleleo_xray_dir}/vmess_qr.json"
+xray_qr_config_file="${idleleo_xray_dir}/info/vmess_qr.json"
 domain=$(grep '\"add\"' $xray_qr_config_file | awk -F '"' '{print $4}')
 
 systemctl stop nginx &> /dev/null
