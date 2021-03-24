@@ -879,7 +879,7 @@ vless_qr_link_image() {
 }
 
 vless_link_image_choice() {
-    echo "请选择生成的链接种类"
+    echo "请选择生成的分享链接种类:"
     echo "1: V2RayN/V2RayNG/Qv2ray"
     read -rp "请输入: " link_version
     [[ -z ${link_version} ]] && link_version=1
@@ -888,6 +888,7 @@ vless_link_image_choice() {
     else
         vless_qr_link_image
     fi
+    echo -e "${Warning} ${YellowBG} VLESS 目前分享链接规范为实验阶段，请自行判断是否适用 ${Font}"
 }
 
 info_extraction() {
@@ -1284,7 +1285,7 @@ menu() {
         ;;
     10)
         basic_information
-        vless_link_image_choice
+        vless_qr_link_image
         show_information
         bash idleleo
         ;;
