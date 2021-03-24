@@ -1199,6 +1199,9 @@ idleleo_commend() {
     if [ -L "${idleleo_commend_file}" ]; then
         echo -e "${Green}可以使用${Red} idleleo ${Font}命令管理脚本\n${Font}"
     else
+        if [ -L "/usr/bin/idleleo-xray" ]; then
+            rm -rf /usr/bin/idleleo-xray
+        fi
         ln -s $(
             cd "$(dirname "$0")"
             pwd
