@@ -1215,9 +1215,9 @@ idleleo_commend() {
 menu() {
     update_sh
     echo -e "\nXray 安装管理脚本 ${Red}[${shell_version}]${Font}"
-    echo -e "---authored by paniy---"
-    echo -e "---changed by www.idleleo.com---"
-    echo -e "https://github.com/paniy\n"
+    echo -e "--- authored by paniy ---"
+    echo -e "--- changed by www.idleleo.com ---"
+    echo -e "--- https://github.com/paniy ---\n"
     echo -e "当前已安装版本: ${shell_mode_show}\n"
 
     idleleo_commend
