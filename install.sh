@@ -32,7 +32,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.5.0"
+shell_version="1.4.5.1"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -819,6 +819,7 @@ acme_cron_update() {
 }
 
 vless_qr_config_tls_ws() {
+    mkdir -p ${idleleo_xray_dir}/info
     cat >$xray_qr_config_file <<-EOF
 {
   "v": "2",
@@ -837,6 +838,7 @@ EOF
 }
 
 vless_qr_config_xtls() {
+    mkdir -p ${idleleo_xray_dir}/info
     cat >$xray_qr_config_file <<-EOF
 {
   "v": "2",
