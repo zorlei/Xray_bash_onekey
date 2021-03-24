@@ -32,7 +32,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.4.1"
+shell_version="1.4.5.0"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -42,13 +42,12 @@ xray_conf="${xray_conf_dir}/config.json"
 nginx_conf="${nginx_conf_dir}/xray.conf"
 idleleo_xray_dir="/etc/idleleo"
 idleleo_commend_file="/usr/bin/idleleo"
-ssl_chainpath="${idleleo_xray_dir}/data"
+ssl_chainpath="${idleleo_xray_dir}/cert"
 nginx_dir="/etc/nginx"
-web_dir="/home/wwwroot"
 nginx_openssl_src="/usr/local/src"
 xray_bin_dir="/usr/local/bin/xray"
-xray_info_file="$HOME/xray_info.inf"
-xray_qr_config_file="/usr/local/vless_qr.json"
+xray_info_file="${idleleo_xray_dir}/info/xray_info.inf"
+xray_qr_config_file="${idleleo_xray_dir}/info/vless_qr.json"
 nginx_systemd_file="/etc/systemd/system/nginx.service"
 xray_systemd_file="/etc/systemd/system/xray.service"
 xray_systemd_file2="/etc/systemd/system/xray@.service"
@@ -698,8 +697,8 @@ nginx_conf_add() {
     server {
         listen 443 ssl http2;
         listen [::]:443 ssl http2;
-        ssl_certificate       /etc/idleleo/data/xray.crt;
-        ssl_certificate_key   /etc/idleleo/data/xray.key;
+        ssl_certificate       /etc/idleleo/cert/xray.crt;
+        ssl_certificate_key   /etc/idleleo/cert/xray.key;
         ssl_protocols         TLSv1.3;
         ssl_ciphers           TLS13-AES-128-GCM-SHA256:TLS13-AES-256-GCM-SHA384:TLS13-CHACHA20-POLY1305-SHA256:TLS13-AES-128-CCM-8-SHA256:TLS13-AES-128-CCM-SHA256:EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+ECDSA+AES128:EECDH+aRSA+AES128:RSA+AES128:EECDH+ECDSA+AES256:EECDH+aRSA+AES256:RSA+AES256:EECDH+ECDSA+3DES:EECDH+aRSA+3DES:RSA+3DES:!MD5;
         server_name           serveraddr.com;
@@ -1063,7 +1062,6 @@ uninstall_all() {
         esac
     fi
     [[ -d $xray_conf_dir ]] && rm -rf $xray_conf_dir
-    [[ -d $web_dir ]] && rm -rf $web_dir
     systemctl daemon-reload
     echo -e "${OK} ${GreenBG} 已卸载，SSL证书文件已保留 ${Font}"
 }
