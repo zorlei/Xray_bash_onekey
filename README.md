@@ -1,4 +1,4 @@
-## Xray 基于 Nginx 的 VLESS WebSocket+TLS / XTLS直连 一键安装脚本
+## Xray 基于 Nginx 的 VLESS WebSocket+TLS / XTLS 一键安装脚本
 [![GitHub issues](https://img.shields.io/github/issues/paniy/Xray_bash_onekey)](https://github.com/paniy/Xray_bash_onekey/issues) [![GitHub forks](https://img.shields.io/github/forks/paniy/Xray_bash_onekey?color=%230885ce)](https://github.com/paniy/Xray_bash_onekey/network) [![GitHub stars](https://img.shields.io/github/stars/paniy/Xray_bash_onekey?color=%230885ce)](https://github.com/paniy/Xray_bash_onekey/stargazers)  
 
 > 感谢 JetBrains 提供的非商业开源软件开发授权。
@@ -22,7 +22,7 @@
 * **安装好 wget**。
 
 ### 安装/更新方式（此为Xray版）
-VLESS+WebSocket+TLS+Nginx 或 VLESS+XTLS+Nginx  二选一：
+VLESS+Nginx+WebSocket+TLS 或 VLESS+XTLS+Nginx  二选一：
 ```
 wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.com/paniy/Xray_bash_onekey/main/install.sh" && chmod +x install.sh && bash install.sh
 ```
