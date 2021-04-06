@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.2.1"
+shell_version="1.5.2.2"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -62,6 +62,7 @@ cert_group="nobody"
 nginx_version="1.18.0"
 openssl_version="1.1.1k"
 jemalloc_version="5.2.1"
+xtls_add_ws="off"
 old_config_status="off"
 random_num=$((RANDOM % 12 + 4))
 THREAD=$(grep 'processor' /proc/cpuinfo | sort -u | wc -l)
@@ -251,7 +252,7 @@ inbound_port_set() {
 
 firewall_set() {
     if [[ "${ID}" == "centos" && ${VERSION_ID} -ge 7 ]]; then
-        if [[ "$shell_mode" != "wsonly" ]]; then
+        if [[ "$shell_mode" != "wsonly" ]] && [[ "$xtls_add_ws" == "off" ]]; then
             firewall-cmd --permanent --add-port=80/tcp
             firewall-cmd --permanent --add-port=443/tcp
             firewall-cmd --permanent --add-port=1024-65535/udp
@@ -741,6 +742,7 @@ xray_xtls_add_ws() {
         modify_listen_address
         inbound_port_set
         modify_inbound_port
+        artxport=${xport}
         echo -e "${OK} ${GreenBG} ws_inbound_port: ${xport} ${Font}"
         ;;
     *)
@@ -749,10 +751,10 @@ xray_xtls_add_ws() {
         modify_path
         xport=$((RANDOM + 10000))
         modify_inbound_port
+        artxport="none"
         echo -e "${OK} ${GreenBG} 已跳过添加ws  ${Font}"
         ;;
     esac
-
 }
 
 old_config_exist_check() {
@@ -940,6 +942,7 @@ vless_qr_config_xtls() {
   "net": "tcp",
   "host": "${domain}",
   "tls": "XTLS",
+  "wsport": "${artxport}",
   "wspath": "${artcamouflage}"
 }
 EOF
@@ -1224,7 +1227,6 @@ install_xray_xtls() {
     domain_check
     old_config_exist_check
     port_set
-    firewall_set
     UUID_set
     stop_service
     xray_install
@@ -1233,6 +1235,7 @@ install_xray_xtls() {
     nginx_exist_check
     nginx_conf_add_xtls
     xray_conf_add
+    firewall_set
     ssl_judge_and_install
     nginx_systemd
     vless_qr_config_xtls
@@ -1412,11 +1415,15 @@ menu() {
         read -rp "请输入连接端口/inbound_port:" port
         if [[ $(info_extraction '\"tls\"') == "TLS" ]]; then
             modify_nginx_port
-            firewall_set
+        elif [[ $(info_extraction '\"tls\"') == "XTLS" ]]; then
+            if [[ $(info_extraction '\"wsport\"') != "none" ]]
+                read -rp "请输入ws inbound_port:" xport
+            fi
+            modify_inbound_port
         else
             modify_inbound_port
-            firewall_set
         fi
+        firewall_set
         start_process_systemd
         bash idleleo
         ;;
