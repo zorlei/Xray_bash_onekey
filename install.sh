@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.2.6"
+shell_version="1.5.2.7"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -403,7 +403,7 @@ modify_path() {
 }
 
 modify_UUID() {
-    sed -i "/\"id\"/c \                \"id\":\"${UUID}\"," ${xray_conf}
+    sed -i "/\"id\"/c \                \"id\": \"${UUID}\"," ${xray_conf}
     judge "Xray UUID 修改"
     [ -f ${xray_qr_config_file} ] && sed -i "/\"id\"/c \\  \"id\": \"${UUID}\"," ${xray_qr_config_file}
     [ -f ${xray_qr_config_file} ] && sed -i "/\"idc\"/c \\  \"idc\": \"${UUID5_char}\"," ${xray_qr_config_file}
