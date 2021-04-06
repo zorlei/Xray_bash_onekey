@@ -1134,7 +1134,6 @@ judge_mode() {
         elif [[ $(info_extraction '\"tls\"') == "XTLS" ]]; then
             shell_mode="xtls"
             shell_mode_show="XTLS+Nginx"
-        fi
         elif [[ $(info_extraction '\"tls\"') == "none" ]]; then
             shell_mode="wsonly"
             shell_mode_show="ws ONLY"
