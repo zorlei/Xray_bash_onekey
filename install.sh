@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.2.2"
+shell_version="1.5.2.3"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -394,11 +394,11 @@ modify_nginx_other() {
 
 modify_path() {
     sed -i "/\"path\"/c \                \"path\":\"${camouflage}\"" ${xray_conf}
-    if [[ "$shell_mode" == "xtls" ]] && [[ "$artcamouflage" == "none" ]]; then
-        echo -e "${Warning} ${YellowBG} XTLS 不支持 path ${Font}"
-    else
+    if [[ "$shell_mode" != "xtls" ]] || [[ "$xtls_add_ws" == "on" ]]; then
         judge "Xray 伪装路径 修改"
         echo -e "${OK} ${GreenBG} 伪装路径: ${camouflage} ${Font}"
+    else
+        echo -e "${Warning} ${YellowBG} XTLS 不支持 path ${Font}"
     fi
 }
 
