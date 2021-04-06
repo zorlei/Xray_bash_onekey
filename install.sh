@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.2.3"
+shell_version="1.5.2.4"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -1028,6 +1028,10 @@ basic_information() {
             echo -e "${Red} 路径 (不要落下/):${Font} $(info_extraction '\"path\"') "
         else
             echo -e "${Red} 流控 (flow):${Font} xtls-rprx-direct "
+            if [[ "$xtls_add_ws" != on ]]; then
+                echo -e "${Red} ws端口 (port):${Font} $(info_extraction '\"wsport\"') "
+                echo -e "${Red} ws路径 (不要落下/):${Font} $(info_extraction '\"wspath\"') "
+            fi
         fi
         echo -e "${Red} 底层传输安全 (tls):${Font} $(info_extraction '\"tls\"') "
     } >"${xray_info_file}"
@@ -1179,6 +1183,9 @@ judge_mode() {
             shell_mode_show="Nginx+ws+tls"
         elif [[ $(info_extraction '\"tls\"') == "XTLS" ]]; then
             shell_mode="xtls"
+            if [[ $(info_extraction '\"wsport\"') != "none" ]]; then
+                xtls_add_ws="on"
+            fi
             shell_mode_show="XTLS+Nginx"
         elif [[ $(info_extraction '\"tls\"') == "none" ]]; then
             shell_mode="wsonly"
