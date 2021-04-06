@@ -1416,7 +1416,7 @@ menu() {
         if [[ $(info_extraction '\"tls\"') == "TLS" ]]; then
             modify_nginx_port
         elif [[ $(info_extraction '\"tls\"') == "XTLS" ]]; then
-            if [[ $(info_extraction '\"wsport\"') != "none" ]]
+            if [[ $(info_extraction '\"wsport\"') != "none" ]]; then
                 read -rp "请输入ws inbound_port:" xport
             fi
             modify_inbound_port
