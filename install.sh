@@ -1325,7 +1325,7 @@ menu() {
     echo -e "${Green}8.${Font}  变更 TLS 版本 (仅ws+tls有效)"
     echo -e "—————————————— 查看信息 ——————————————"
     echo -e "${Green}9.${Font}  查看 实时访问日志"
-    echo -e "${Green}10.${Font}  查看 实时错误日志"
+    echo -e "${Green}10.${Font} 查看 实时错误日志"
     echo -e "${Green}11.${Font} 查看 Xray 配置信息"
     echo -e "—————————————— 其他选项 ——————————————"
     echo -e "${Green}12.${Font} 安装 TCP 加速脚本"
