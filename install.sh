@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.0.3"
+shell_version="1.5.0.4"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -340,7 +340,7 @@ modify_alterid() {
 }
 
 modify_listen_address() {
-    sed -i "/\"listen\"/c \        \"listen\":\"0.0.0.0\"" ${xray_conf}
+    sed -i "/\"listen\"/c \        \"listen\": \"0.0.0.0\"," ${xray_conf}
 }
 
 modify_inbound_port() {
