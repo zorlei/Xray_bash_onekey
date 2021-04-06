@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.2.0"
+shell_version="1.5.2.1"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -716,6 +716,7 @@ xray_conf_add() {
     if [[ "$shell_mode" != "xtls" ]]; then
         wget --no-check-certificate https://raw.githubusercontent.com/paniy/Xray_bash_onekey/main/VLESS_tls/config.json -O config.json
         modify_path
+        modify_inbound_port
     else
         wget --no-check-certificate https://raw.githubusercontent.com/paniy/Xray_bash_onekey/main/VLESS_xtls/config.json -O config.json
         xray_xtls_add_ws
@@ -724,12 +725,12 @@ xray_conf_add() {
         modify_listen_address
     fi
     modify_alterid
-    modify_inbound_port
     modify_UUID
 }
 
 xray_xtls_add_ws() {
-    echo -e "${GreenBG} 是否添加无加密ws协议, 方便用于负载均衡 [Y/N]? ${Font}"
+    echo -e "${GreenBG} 是否添加简单ws协议, 方便用于负载均衡 [Y/N]? ${Font}"
+    echo -e "${Warning} ${YellowBG} 如不清楚具体用途, 请勿选择! ${Font}"
     read -r xtls_add_ws_fq
     case $xtls_add_ws_fq in
     [yY][eE][sS] | [yY])
