@@ -342,6 +342,7 @@ modify_inbound_port() {
     else
         #        sed -i "/\"port\"/c  \    \"port\":${port}," ${xray_conf}
         sed -i "8c\        \"port\": ${port}," ${xray_conf}
+        [ -f ${xray_qr_config_file} ] && sed -i "/\"port\"/c \\  \"port\": \"${port}\"," ${xray_qr_config_file}
     fi
     judge "Xray inbound_port 修改"
     echo -e "${OK} ${GreenBG} inbound_port: ${port} ${Font}"
