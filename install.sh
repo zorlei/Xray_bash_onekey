@@ -1024,6 +1024,7 @@ basic_information() {
 
         echo -e "${Red} 加密 (encryption):${Font} none "
         echo -e "${Red} 传输协议 (network):${Font} $(info_extraction '\"net\"') "
+        echo -e "${Red} 底层传输安全 (tls):${Font} $(info_extraction '\"tls\"') "
         if [[ "$shell_mode" != "xtls" ]]; then
             echo -e "${Red} 路径 (不要落下/):${Font} $(info_extraction '\"path\"') "
         else
@@ -1033,7 +1034,6 @@ basic_information() {
                 echo -e "${Red} ws路径 (不要落下/):${Font} $(info_extraction '\"wspath\"') "
             fi
         fi
-        echo -e "${Red} 底层传输安全 (tls):${Font} $(info_extraction '\"tls\"') "
     } >"${xray_info_file}"
 }
 
