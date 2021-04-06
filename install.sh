@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.0.4"
+shell_version="1.5.1.0"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -391,13 +391,13 @@ modify_nginx_other() {
 }
 
 modify_path() {
-    if [[ "$shell_mode" != "xtls" ]]; then
-        sed -i "/\"path\"/c \                \"path\":\"${camouflage}\"" ${xray_conf}
-    else
+    sed -i "/\"path\"/c \                \"path\":\"${camouflage}\"" ${xray_conf}
+    if [[ "$shell_mode" == "xtls" ]] && [[ $(info_extraction '\"wspath\"') == "none" ]]; then
         echo -e "${Warning} ${YellowBG} XTLS 不支持 path ${Font}"
+    else
+        judge "Xray 伪装路径 修改"
+        echo -e "${OK} ${GreenBG} 伪装路径: ${camouflage} ${Font}"
     fi
-    judge "Xray 伪装路径 修改"
-    echo -e "${OK} ${GreenBG} 伪装路径: ${camouflage} ${Font}"
 }
 
 modify_UUID() {
@@ -714,16 +714,36 @@ xray_conf_add() {
     cd ${xray_conf_dir} || exit
     if [[ "$shell_mode" != "xtls" ]]; then
         wget --no-check-certificate https://raw.githubusercontent.com/paniy/Xray_bash_onekey/main/VLESS_tls/config.json -O config.json
+        modify_path
     else
         wget --no-check-certificate https://raw.githubusercontent.com/paniy/Xray_bash_onekey/main/VLESS_xtls/config.json -O config.json
+        xray_xtls_add_ws
     fi
     if [[ "$shell_mode" == "wsonly" ]]; then
         modify_listen_address
     fi
-    modify_path
     modify_alterid
     modify_inbound_port
     modify_UUID
+}
+
+xray_xtls_add_ws() {
+    echo -e "${GreenBG} 是否添加无加密ws协议, 方便用于负载均衡 [Y/N]? ${Font}"
+    read -r xtls_add_ws_fq
+    case $xtls_add_ws_fq in
+    [yY][eE][sS] | [yY])
+        path_set
+        modify_path
+        artcamouflage = ${camouflage}
+        ;;
+    *)
+        camouflage="/$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})"
+        modify_path
+        artcamouflage = "none"
+        echo -e "${OK} ${GreenBG} 已跳过添加ws  ${Font}"
+        ;;
+    esac
+
 }
 
 old_config_exist_check() {
@@ -910,7 +930,8 @@ vless_qr_config_xtls() {
   "id": "${UUID}",
   "net": "tcp",
   "host": "${domain}",
-  "tls": "XTLS"
+  "tls": "XTLS",
+  "wspath": "${artcamouflage}"
 }
 EOF
 }

@@ -34,6 +34,13 @@
                     "keyFile": "/etc/idleleo/cert/xray.key"
                 }]
             }
+        },
+        "streamSettings": {
+            "network": "ws",
+            "security": "none",
+            "wsSettings": {
+                "path": "/websocket"
+            }
         }
     }],
     "outbounds": [{
