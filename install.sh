@@ -379,7 +379,7 @@ modify_nginx_other() {
     sed -i "/server_name/c \\\t\\tserver_name ${domain};" ${nginx_conf}
     if [[ "$shell_mode" != "xtls" ]]; then
         sed -i "/location/c \\\tlocation ${camouflage}" ${nginx_conf}
-        sed -i "/xray-serverc/c \\\t\\t\\tserver 127.0.0.1:${xport} weight=2 max_fails=2 fail_timeout=2;" ${nginx_conf}
+        sed -i "/xray-serverc/c \\\t\\t\\tserver 127.0.0.1:${xport} weight=2 max_fails=10 fail_timeout=1;" ${nginx_conf}
     fi
     sed -i "/return/c \\\t\\treturn 301 https://${domain}\$request_uri;" ${nginx_conf}
     sed -i "/returc/c \\\t\\t\\treturn 302 https://www.idleleo.com/helloworld;" ${nginx_conf}
