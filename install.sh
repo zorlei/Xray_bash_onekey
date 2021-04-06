@@ -339,7 +339,10 @@ modify_inbound_port() {
     if [[ "$shell_mode" == "ws" ]]; then
         #        sed -i "/\"port\"/c  \    \"port\":${xport}," ${xray_conf}
         sed -i "8c\        \"port\": ${xport}," ${xray_conf}
-    else
+    elif [[ "$shell_mode" == "wsonly" ]]; then
+        sed -i "8c\        \"port\": ${xport}," ${xray_conf}
+        [ -f ${xray_qr_config_file} ] && sed -i "/\"port\"/c \\  \"port\": \"${xport}\"," ${xray_qr_config_file}
+    elif [[ "$shell_mode" == "xtls" ]]; then
         #        sed -i "/\"port\"/c  \    \"port\":${port}," ${xray_conf}
         sed -i "8c\        \"port\": ${port}," ${xray_conf}
         [ -f ${xray_qr_config_file} ] && sed -i "/\"port\"/c \\  \"port\": \"${port}\"," ${xray_qr_config_file}
@@ -1363,7 +1366,7 @@ menu() {
         bash idleleo
         ;;
     7)
-        read -rp "请输入连接端口:" port
+        read -rp "请输入连接端口/inbound_port:" port
         if [[ $(info_extraction '\"tls\"') == "TLS" ]]; then
             modify_nginx_port
             firewall_set
