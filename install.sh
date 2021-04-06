@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.2.5"
+shell_version="1.5.2.6"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -742,10 +742,12 @@ xray_xtls_add_ws() {
         modify_listen_address
         inbound_port_set
         modify_inbound_port
+        port_exist_check "${xport}"
         artxport=${xport}
         echo -e "${OK} ${GreenBG} ws_inbound_port: ${xport} ${Font}"
         ;;
     *)
+        xtls_add_ws="off"
         artcamouflage="none"
         camouflage="/$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})"
         modify_path
