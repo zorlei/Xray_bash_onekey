@@ -1028,7 +1028,7 @@ basic_information() {
             echo -e "${Red} 路径 (不要落下/):${Font} $(info_extraction '\"path\"') "
         else
             echo -e "${Red} 流控 (flow):${Font} xtls-rprx-direct "
-            if [[ "$xtls_add_ws" == on ]]; then
+            if [[ "$xtls_add_ws" == "on" ]]; then
                 echo -e "${Red} ws端口 (port):${Font} $(info_extraction '\"wsport\"') "
                 echo -e "${Red} ws路径 (不要落下/):${Font} $(info_extraction '\"wspath\"') "
             fi
