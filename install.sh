@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.4.5.7"
+shell_version="1.4.5.6"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -314,12 +314,12 @@ modify_inbound_port() {
         port="$(info_extraction '\"port\"')"
     fi
     if [[ "$shell_mode" != "xtls" ]]; then
-        port=$((RANDOM + 10000))
-        #        sed -i "/\"port\"/c  \    \"port\": ${port}," ${xray_conf}
-        sed -i "8c\        \"port\": ${port}," ${xray_conf}
+        PORT=$((RANDOM + 10000))
+        #        sed -i "/\"port\"/c  \    \"port\":${PORT}," ${xray_conf}
+        sed -i "8c\        \"port\":${PORT}," ${xray_conf}
     else
-        #        sed -i "/\"port\"/c  \    \"port\": ${port}," ${xray_conf}
-        sed -i "8c\        \"port\": ${port}," ${xray_conf}
+        #        sed -i "/\"port\"/c  \    \"port\":${port}," ${xray_conf}
+        sed -i "8c\        \"port\":${port}," ${xray_conf}
     fi
     judge "Xray inbound_port 修改"
     echo -e "${OK} ${GreenBG} inbound_port: ${port} ${Font}"
@@ -340,7 +340,7 @@ modify_nginx_other() {
     sed -i "/server_name/c \\\t\\tserver_name ${domain};" ${nginx_conf}
     if [[ "$shell_mode" != "xtls" ]]; then
         sed -i "/location/c \\\tlocation ${camouflage}" ${nginx_conf}
-        sed -i "/proxy_pass/c \\\t\\t\\tproxy_pass http://127.0.0.1:${port};" ${nginx_conf}
+        sed -i "/proxy_pass/c \\\t\\t\\tproxy_pass http://127.0.0.1:${PORT};" ${nginx_conf}
     fi
     sed -i "/return/c \\\t\\treturn 301 https://${domain}\$request_uri;" ${nginx_conf}
     sed -i "/returc/c \\\t\\t\\treturn 302 https://www.idleleo.com/helloworld;" ${nginx_conf}
