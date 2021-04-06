@@ -340,14 +340,16 @@ modify_inbound_port() {
         #        sed -i "/\"port\"/c  \    \"port\":${xport}," ${xray_conf}
         sed -i "8c\        \"port\": ${xport}," ${xray_conf}
     elif [[ "$shell_mode" == "wsonly" ]]; then
+        port=${xport}
         sed -i "8c\        \"port\": ${xport}," ${xray_conf}
-        [ -f ${xray_qr_config_file} ] && sed -i "/\"port\"/c \\  \"port\": \"${xport}\"," ${xray_qr_config_file}
     elif [[ "$shell_mode" == "xtls" ]]; then
         #        sed -i "/\"port\"/c  \    \"port\":${port}," ${xray_conf}
         sed -i "8c\        \"port\": ${port}," ${xray_conf}
-        [ -f ${xray_qr_config_file} ] && sed -i "/\"port\"/c \\  \"port\": \"${port}\"," ${xray_qr_config_file}
     fi
     judge "Xray inbound_port 修改"
+    if [[ "$shell_mode" != "ws" ]]; then
+        [ -f ${xray_qr_config_file} ] && sed -i "/\"port\"/c \\  \"port\": \"${port}\"," ${xray_qr_config_file}
+    fi
     echo -e "${OK} ${GreenBG} inbound_port: ${port} ${Font}"
 }
 
