@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.2.4"
+shell_version="1.5.2.5"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -1028,7 +1028,7 @@ basic_information() {
             echo -e "${Red} 路径 (不要落下/):${Font} $(info_extraction '\"path\"') "
         else
             echo -e "${Red} 流控 (flow):${Font} xtls-rprx-direct "
-            if [[ "$xtls_add_ws" != on ]]; then
+            if [[ "$xtls_add_ws" == on ]]; then
                 echo -e "${Red} ws端口 (port):${Font} $(info_extraction '\"wsport\"') "
                 echo -e "${Red} ws路径 (不要落下/):${Font} $(info_extraction '\"wspath\"') "
             fi
