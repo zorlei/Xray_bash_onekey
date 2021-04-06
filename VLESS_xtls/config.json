@@ -5,44 +5,55 @@
         "loglevel": "warning"
     },
     "inbounds": [{
-        "port": 443,
-        "protocol": "VLESS",
-        "settings": {
-            "clients": [{
-                "id": "UUID",
-                "flow": "xtls-rprx-direct",
-                "level": 0,
-                "email": "me@idleleo.com"
-            }],
-            "decryption": "none",
-            "fallbacks": [{
-                "dest": 8080,
-                "xver": 1
-            }]
-        },
-        "streamSettings": {
-            "network": "tcp",
-            "security": "xtls",
-            "xtlsSettings": {
-                "minVersion": "1.2",
-                "alpn": [
-                    "http/1.1",
-                    "h2"
-                ],
-                "certificates": [{
-                    "certificateFile": "/etc/idleleo/cert/xray.crt",
-                    "keyFile": "/etc/idleleo/cert/xray.key"
+            "port": 443,
+            "protocol": "VLESS",
+            "settings": {
+                "clients": [{
+                    "id": "UUID",
+                    "flow": "xtls-rprx-direct",
+                    "level": 0,
+                    "email": "me@idleleo.com"
+                }],
+                "decryption": "none",
+                "fallbacks": [{
+                    "dest": 8080,
+                    "xver": 1
                 }]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "xtls",
+                "xtlsSettings": {
+                    "minVersion": "1.2",
+                    "alpn": ["http/1.1", "h2"],
+                    "certificates": [{
+                        "certificateFile": "/etc/idleleo/cert/xray.crt",
+                        "keyFile": "/etc/idleleo/cert/xray.key"
+                    }]
+                }
             }
         },
-        "streamSettings": {
-            "network": "ws",
-            "security": "none",
-            "wsSettings": {
-                "path": "/websocket"
+        {
+            "port": 10086,
+            "listen": "127.0.0.1",
+            "protocol": "VLESS",
+            "settings": {
+                "clients": [{
+                    "id": "UUID",
+                    "level": 0,
+                    "email": "me@idleleo.com"
+                }],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "none",
+                "wsSettings": {
+                    "path": "/websocket"
+                }
             }
         }
-    }],
+    ],
     "outbounds": [{
         "protocol": "freedom"
     }]

@@ -356,12 +356,13 @@ modify_inbound_port() {
     elif [[ "$shell_mode" == "xtls" ]]; then
         #        sed -i "/\"port\"/c  \    \"port\":${port}," ${xray_conf}
         sed -i "8c\        \"port\": ${port}," ${xray_conf}
+        sed -i "37c\        \"port\": ${xport}," ${xray_conf}
     fi
-    judge "Xray inbound_port 修改"
+    judge "Xray port 修改"
     if [[ "$shell_mode" != "ws" ]]; then
         [ -f ${xray_qr_config_file} ] && sed -i "/\"port\"/c \\  \"port\": \"${port}\"," ${xray_qr_config_file}
     fi
-    echo -e "${OK} ${GreenBG} inbound_port: ${port} ${Font}"
+    echo -e "${OK} ${GreenBG} port: ${port} ${Font}"
 }
 
 modify_nginx_port() {
@@ -392,7 +393,7 @@ modify_nginx_other() {
 
 modify_path() {
     sed -i "/\"path\"/c \                \"path\":\"${camouflage}\"" ${xray_conf}
-    if [[ "$shell_mode" == "xtls" ]] && [[ $(info_extraction '\"wspath\"') == "none" ]]; then
+    if [[ "$shell_mode" == "xtls" ]] && [[ "$artcamouflage" == "none" ]]; then
         echo -e "${Warning} ${YellowBG} XTLS 不支持 path ${Font}"
     else
         judge "Xray 伪装路径 修改"
@@ -732,14 +733,21 @@ xray_xtls_add_ws() {
     read -r xtls_add_ws_fq
     case $xtls_add_ws_fq in
     [yY][eE][sS] | [yY])
+        xtls_add_ws="on"
         path_set
         modify_path
-        artcamouflage = ${camouflage}
+        artcamouflage=${camouflage}
+        modify_listen_address
+        inbound_port_set
+        modify_inbound_port
+        echo -e "${OK} ${GreenBG} ws_inbound_port: ${xport} ${Font}"
         ;;
     *)
+        artcamouflage="none"
         camouflage="/$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})"
         modify_path
-        artcamouflage = "none"
+        xport=$((RANDOM + 10000))
+        modify_inbound_port
         echo -e "${OK} ${GreenBG} 已跳过添加ws  ${Font}"
         ;;
     esac
