@@ -41,7 +41,7 @@
                 "clients": [{
                     "id": "UUID",
                     "level": 0,
-                    "email": "me2@idleleo.com"
+                    "email": "ws@idleleo.com"
                 }],
                 "decryption": "none"
             },
