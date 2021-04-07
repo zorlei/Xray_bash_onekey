@@ -65,7 +65,7 @@ jemalloc_version="5.2.1"
 xtls_add_ws="off"
 old_config_status="off"
 random_num=$((RANDOM % 12 + 4))
-THREAD=$(grep 'processor' /proc/cpuinfo | sort -u | wc -l)
+THREAD=$(($(grep 'processor' /proc/cpuinfo | sort -u | wc -l) + 1))
 
 source '/etc/os-release'
 
@@ -80,7 +80,6 @@ check_system() {
         echo -e "${OK} ${GreenBG} 当前系统为 Debian ${VERSION_ID} ${VERSION} ${Font}"
         INS="apt"
         $INS update
-        ## 添加 Nginx apt源
     elif [[ "${ID}" == "ubuntu" && $(echo "${VERSION_ID}" | cut -d '.' -f1) -ge 16 ]]; then
         echo -e "${OK} ${GreenBG} 当前系统为 Ubuntu ${VERSION_ID} ${UBUNTU_CODENAME} ${Font}"
         INS="apt"
