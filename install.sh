@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.2.7"
+shell_version="1.5.2.8"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -69,7 +69,7 @@ THREAD=$(grep 'processor' /proc/cpuinfo | sort -u | wc -l)
 
 source '/etc/os-release'
 
-#从VERSION中提取发行版系统的英文名称，为了在debian/ubuntu下添加相对应的Nginx apt源
+#从VERSION中提取发行版系统的英文名称, 为了在debian/ubuntu下添加相对应的Nginx apt源
 VERSION=$(echo "${VERSION}" | awk -F "[()]" '{print $2}')
 
 check_system() {
@@ -90,7 +90,7 @@ check_system() {
         rm /var/cache/apt/archives/lock
         $INS update
     else
-        echo -e "${Error} ${RedBG} 当前系统为 ${ID} ${VERSION_ID} 不在支持的系统列表内，安装中断 ${Font}"
+        echo -e "${Error} ${RedBG} 当前系统为 ${ID} ${VERSION_ID} 不在支持的系统列表内, 安装中断 ${Font}"
         exit 1
     fi
 
@@ -111,10 +111,10 @@ check_system() {
 
 is_root() {
     if [ 0 == $UID ]; then
-        echo -e "${OK} ${GreenBG} 当前用户是root用户，进入安装流程 ${Font}"
+        echo -e "${OK} ${GreenBG} 当前用户是 root用户, 进入安装流程 ${Font}"
         sleep 3
     else
-        echo -e "${Error} ${RedBG} 当前用户不是root用户，请切换到root用户后重新执行脚本 ${Font}"
+        echo -e "${Error} ${RedBG} 当前用户不是 root用户, 请切换到 root用户 后重新执行脚本 ${Font}"
         exit 1
     fi
 }
@@ -183,26 +183,6 @@ dependency_install() {
     else
         ${INS} -y install libpcre3 libpcre3-dev zlib1g-dev dbus
     fi
-
-    #    ${INS} -y install rng-tools
-    #    judge "rng-tools 安装"
-
-    ${INS} -y install haveged
-    #    judge "haveged 安装"
-
-    #    sed -i -r '/^HRNGDEVICE/d;/#HRNGDEVICE=\/dev\/null/a HRNGDEVICE=/dev/urandom' /etc/default/rng-tools
-
-    if [[ "${ID}" == "centos" ]]; then
-        #       systemctl start rngd && systemctl enable rngd
-        #       judge "rng-tools 启动"
-        systemctl start haveged && systemctl enable haveged
-        #       judge "haveged 启动"
-    else
-        #       systemctl start rng-tools && systemctl enable rng-tools
-        #       judge "rng-tools 启动"
-        systemctl start haveged && systemctl enable haveged
-        #       judge "haveged 启动"
-    fi
 }
 
 basic_optimization() {
@@ -232,20 +212,20 @@ port_set() {
 }
 
 inbound_port_set() {
-    echo -e "${GreenBG} 是否需要自定义inbound_port [Y/N]? ${Font}"
+    echo -e "${GreenBG} 是否需要自定义 inbound_port [Y/N]? ${Font}"
     read -r inbound_port_modify_fq
     case $inbound_port_modify_fq in
     [yY][eE][sS] | [yY])
-        read -rp "请输入自定义inbound_port (请勿与连接端口相同！):" xport
+        read -rp "请输入自定义 inbound_port (请勿与连接端口相同！):" xport
         if [[ $xport -le 0 ]] || [[ $xport -gt 65535 ]]; then
             echo -e "${Error} ${RedBG} 请输入 0-65535 之间的值 ${Font}"
             exit 1
         fi
-        echo -e "${OK} ${GreenBG} inbound_port为: ${xport} ${Font}"
+        echo -e "${OK} ${GreenBG} inbound_port: ${xport} ${Font}"
         ;;
     *)
         xport=$((RANDOM + 10000))
-        echo -e "${OK} ${GreenBG} inbound_port为: ${xport} ${Font}"
+        echo -e "${OK} ${GreenBG} inbound_port: ${xport} ${Font}"
         ;;
     esac
 }
@@ -276,7 +256,7 @@ firewall_set() {
         fi
     fi
     echo -e "${OK} ${GreenBG} 开放防火墙相关端口 ${Font}"
-    echo -e "${OK} ${GreenBG} 配置Xray FullCone ${Font}"
+    echo -e "${OK} ${GreenBG} 配置 Xray FullCone ${Font}"
 }
 
 path_set() {
@@ -287,13 +267,13 @@ path_set() {
         read -r path_modify_fq
         case $path_modify_fq in
         [yY][eE][sS] | [yY])
-            read -rp "请输入自定义伪装路径(不需要“/”):" camouflage
+            read -rp "请输入自定义伪装路径 (不需要“/”):" camouflage
             camouflage="/${camouflage}"
-            echo -e "${OK} ${GreenBG} 伪装路径为: ${camouflage} ${Font}"
+            echo -e "${OK} ${GreenBG} 伪装路径: ${camouflage} ${Font}"
             ;;
         *)
             camouflage="/$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})"
-            echo -e "${OK} ${GreenBG} 伪装路径为: ${camouflage} ${Font}"
+            echo -e "${OK} ${GreenBG} 伪装路径: ${camouflage} ${Font}"
             ;;
         esac
     fi
@@ -304,7 +284,7 @@ UUID_set() {
         UUID="$(info_extraction '\"id\"')"
         UUID5_char="$(info_extraction '\"idc\"')"
     else
-        echo -e "${GreenBG} 是否需要自定义字符串映射为UUIDv5 [Y/N]? ${Font}"
+        echo -e "${GreenBG} 是否需要自定义字符串映射为 UUIDv5 [Y/N]? ${Font}"
         read -r need_UUID5
         case $need_UUID5 in
         [yY][eE][sS] | [yY])
@@ -316,7 +296,7 @@ UUID_set() {
         [nN][oO] | [nN] | *)
             UUID5_char="$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})"
             UUID="$(UUIDv5_tranc ${UUID5_char})"
-            echo -e "${OK} ${GreenBG} UUID映射字符串: ${UUID5_char} ${Font}"
+            echo -e "${OK} ${GreenBG} UUID 映射字符串: ${UUID5_char} ${Font}"
             echo -e "${OK} ${GreenBG} UUIDv5: ${UUID} ${Font}"
             #[ -z "$UUID" ] && UUID=$(cat /proc/sys/kernel/random/uuid)
             echo -e "${OK} ${GreenBG} UUID: ${UUID} ${Font}"
@@ -411,18 +391,14 @@ modify_UUID() {
 }
 
 web_camouflage() {
-    ##请注意 这里和LNMP脚本的默认路径冲突，千万不要在安装了LNMP的环境下使用本脚本，否则后果自负
-    #rm -rf /home/wwwroot
-    #mkdir -p /home/wwwroot
-    #cd /home/wwwroot || exit
-    #git clone https://github.com/wulabing/3DCEList.git
+    ##请注意 这里和LNMP脚本的默认路径冲突, 千万不要在安装了LNMP的环境下使用本脚本, 否则后果自负
     judge "web 站点伪装"
 }
 
 xray_privilege_escalation() {
     if [[ -n "$(grep "User=nobody" ${xray_systemd_file})" ]]; then
-        #echo -e "${OK} ${GreenBG} 检测到Xray权限不足，将提高Xray权限至root ${Font}"
-        echo -e "${OK} ${GreenBG} 检测到Xray的权限控制，启动擦屁股程序 ${Font}"
+        #echo -e "${OK} ${GreenBG} 检测到Xray权限不足, 将提高Xray权限至root ${Font}"
+        echo -e "${OK} ${GreenBG} 检测到 Xray 的权限控制, 启动擦屁股程序 ${Font}"
         systemctl stop xray
         #sed -i "s/User=nobody/User=root/" ${xray_systemd_file}
         chmod -fR a+rw /var/log/xray/
@@ -464,7 +440,7 @@ xray_install() {
         sleep 1
         xray_privilege_escalation
     else
-        echo -e "${Error} ${RedBG} Xray 安装文件下载失败，请检查下载地址是否可用 ${Font}"
+        echo -e "${Error} ${RedBG} Xray 安装文件下载失败, 请检查下载地址是否可用 ${Font}"
         exit 4
     fi
     # 清除临时文件
@@ -487,7 +463,7 @@ xray_update() {
         sleep 1
         xray_privilege_escalation
     else
-        echo -e "${GreenBG} 若更新无效，建议直接卸载再安装！ ${Font}"
+        echo -e "${GreenBG} 若更新无效, 建议直接卸载再安装！ ${Font}"
         systemctl stop xray
         #systemctl disable xray.service --now
         #mv -f /etc/xray/ /usr/local/etc/
@@ -512,10 +488,10 @@ nginx_exist_check() {
         else
             mkdir ${nginx_dir}/conf/conf.d
         fi
-        echo -e "${OK} ${GreenBG} Nginx已存在，跳过编译安装过程 ${Font}"
+        echo -e "${OK} ${GreenBG} Nginx 已存在, 跳过编译安装过程 ${Font}"
         sleep 2
     elif [[ -d "/usr/local/nginx/" ]]; then
-        echo -e "${OK} ${GreenBG} 检测到其他套件安装的Nginx，继续安装会造成冲突，请处理后安装 ${Font}"
+        echo -e "${OK} ${GreenBG} 检测到其他套件安装的 Nginx, 继续安装会造成冲突, 请处理后安装 ${Font}"
         exit 1
     else
         nginx_install
@@ -558,7 +534,7 @@ nginx_install() {
     echo '/usr/local/lib' >/etc/ld.so.conf.d/local.conf
     ldconfig
 
-    echo -e "${OK} ${GreenBG} 即将开始编译安装 Nginx, 过程稍久，请耐心等待 ${Font}"
+    echo -e "${OK} ${GreenBG} 即将开始编译安装 Nginx, 过程稍久, 请耐心等待 ${Font}"
     sleep 4
 
     cd ../nginx-${nginx_version} || exit
@@ -595,7 +571,7 @@ nginx_install() {
     rm -rf ../nginx-"${nginx_version}".tar.gz
     rm -rf ../openssl-"${openssl_version}".tar.gz
 
-    # 添加配置文件夹，适配旧版脚本
+    # 添加配置文件夹, 适配旧版脚本
     mkdir ${nginx_dir}/conf/conf.d
 }
 
@@ -612,13 +588,13 @@ ssl_install() {
 }
 
 domain_check() {
-    read -rp "请输入你的域名信息(eg:www.idleleo.com):" domain
+    read -rp "请输入你的域名信息 (eg:www.idleleo.com):" domain
     echo "请选择 公网IP 为 IPv4 或 IPv6"
     echo "1: IPv4 (默认)"
     echo "2: IPv6 (不推荐)"
     read -rp "请输入: " ip_version
     [[ -z ${ip_version} ]] && ip_version=1
-    echo -e "${OK} ${GreenBG} 正在获取 公网IP 信息，请耐心等待 ${Font}"
+    echo -e "${OK} ${GreenBG} 正在获取 公网IP 信息, 请耐心等待 ${Font}"
     if [[ $ip_version == 1 ]]; then
         local_ip=$(curl -4 ip.sb)
         domain_ip=$(ping -4 "${domain}" -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
@@ -629,15 +605,15 @@ domain_check() {
         local_ip=$(curl -4 ip.sb)
         domain_ip=$(ping -4 "${domain}" -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
     fi
-    echo -e "域名dns解析IP: ${domain_ip}"
-    echo -e "本机IP: ${local_ip}"
+    echo -e "域名DNS 解析IP: ${domain_ip}"
+    echo -e "公网IP: ${local_ip}"
     sleep 2
     if [[ ${local_ip} == ${domain_ip} ]]; then
-        echo -e "${OK} ${GreenBG} 域名dns解析IP 与 本机IP 匹配 ${Font}"
+        echo -e "${OK} ${GreenBG} 域名DNS 解析IP 与 公网IP 匹配 ${Font}"
         sleep 2
     else
-        echo -e "${Error} ${RedBG} 请确保域名添加了正确的 A/AAAA 记录，否则将无法正常使用 Xray ${Font}"
-        echo -e "${Error} ${RedBG} 域名dns解析IP 与 本机IP 不匹配 是否继续安装 [Y/N]? ${Font}" && read -r install
+        echo -e "${Error} ${RedBG} 请确保域名添加了正确的 A/AAAA 记录, 否则将无法正常使用 Xray ${Font}"
+        echo -e "${Error} ${RedBG} 域名DNS 解析IP 与 公网IP 不匹配 是否继续安装 [Y/N]? ${Font}" && read -r install
         case $install in
         [yY][eE][sS] | [yY])
             echo -e "${GreenBG} 继续安装 ${Font}"
@@ -657,7 +633,7 @@ ip_check() {
     echo "2: IPv6 (不推荐)"
     read -rp "请输入: " ip_version
     [[ -z ${ip_version} ]] && ip_version=1
-    echo -e "${OK} ${GreenBG} 正在获取 公网IP 信息，请耐心等待 ${Font}"
+    echo -e "${OK} ${GreenBG} 正在获取 公网IP 信息, 请耐心等待 ${Font}"
     if [[ $ip_version == 1 ]]; then
         local_ip=$(curl -4 ip.sb)
     elif [[ $ip_version == 2 ]]; then
@@ -665,7 +641,7 @@ ip_check() {
     else
         local_ip=$(curl -4 ip.sb)
     fi
-    echo -e "本机IP: ${local_ip}"
+    echo -e "公网IP: ${local_ip}"
 }
 
 port_exist_check() {
@@ -673,7 +649,7 @@ port_exist_check() {
         echo -e "${OK} ${GreenBG} $1 端口未被占用 ${Font}"
         sleep 1
     else
-        echo -e "${Error} ${RedBG} 检测到 $1 端口被占用，以下为 $1 端口占用信息 ${Font}"
+        echo -e "${Error} ${RedBG} 检测到 $1 端口被占用, 以下为 $1 端口占用信息 ${Font}"
         lsof -i:"$1"
         echo -e "${OK} ${GreenBG} 5s 后将尝试自动 kill 占用进程 ${Font}"
         sleep 5
@@ -685,7 +661,7 @@ port_exist_check() {
 
 acme() {
     if "$HOME"/.acme.sh/acme.sh --issue -d "${domain}" --standalone -k ec-256 --force --test; then
-        echo -e "${OK} ${GreenBG} SSL 证书测试签发成功，开始正式签发 ${Font}"
+        echo -e "${OK} ${GreenBG} SSL 证书测试签发成功, 开始正式签发 ${Font}"
         rm -rf "$HOME/.acme.sh/${domain}_ecc"
         sleep 2
     else
@@ -730,7 +706,7 @@ xray_conf_add() {
 }
 
 xray_xtls_add_ws() {
-    echo -e "${GreenBG} 是否添加简单ws协议, 方便用于负载均衡 [Y/N]? ${Font}"
+    echo -e "${GreenBG} 是否添加简单 ws协议 用于负载均衡 [Y/N]? ${Font}"
     echo -e "${Warning} ${YellowBG} 如不清楚具体用途, 请勿选择! ${Font}"
     read -r xtls_add_ws_fq
     case $xtls_add_ws_fq in
@@ -754,14 +730,14 @@ xray_xtls_add_ws() {
         xport=$((RANDOM + 10000))
         modify_inbound_port
         artxport="none"
-        echo -e "${OK} ${GreenBG} 已跳过添加ws  ${Font}"
+        echo -e "${OK} ${GreenBG} 已跳过添加简单 ws协议  ${Font}"
         ;;
     esac
 }
 
 old_config_exist_check() {
     if [[ -f $xray_qr_config_file ]]; then
-        echo -e "${GreenBG} 检测到旧配置文件，是否读取旧文件配置 [Y/N]? ${Font}"
+        echo -e "${GreenBG} 检测到旧配置文件, 是否读取旧文件配置 [Y/N]? ${Font}"
         read -r ssl_delete
         case $ssl_delete in
         [yY][eE][sS] | [yY])
@@ -884,7 +860,7 @@ enable_process_systemd() {
         judge "设置 Nginx 开机自启"
     fi
     systemctl enable xray
-    judge "设置 xray 开机自启"
+    judge "设置 Xray 开机自启"
 }
 
 stop_process_systemd() {
@@ -984,7 +960,7 @@ vless_qr_link_image() {
     fi
         {
             echo -e "\n${Red} —————————————— Xray 配置分享 —————————————— ${Font}"
-            echo -e "${Red} URL分享链接: ${vless_link} ${Font}"
+            echo -e "${Red} URL 分享链接: ${vless_link} ${Font}"
             echo -e "$Red 二维码: $Font"
             echo -n "${vless_link}" | qrencode -o - -t utf8
             echo -e "\n"
@@ -1001,7 +977,7 @@ vless_link_image_choice() {
     else
         vless_qr_link_image
     fi
-    echo -e "${Warning} ${YellowBG} VLESS 目前分享链接规范为实验阶段，请自行判断是否适用 ${Font}"
+    echo -e "${Warning} ${YellowBG} VLESS 目前分享链接规范为实验阶段, 请自行判断是否适用 ${Font}"
 }
 
 info_extraction() {
@@ -1017,7 +993,7 @@ basic_information() {
         elif  [[ "$shell_mode" == "wsonly" ]]; then
             echo -e "${OK} ${GreenBG} ws ONLY 安装成功 ${Font}"
         fi
-        echo -e "${Warning} ${YellowBG} VLESS 目前分享链接规范为实验阶段，请自行判断是否适用 ${Font}"
+        echo -e "${Warning} ${YellowBG} VLESS 目前分享链接规范为实验阶段, 请自行判断是否适用 ${Font}"
         echo -e "\n${Red} —————————————— Xray 配置信息 —————————————— ${Font}"
         echo -e "${Red} 地址 (address):${Font} $(info_extraction '\"add\"') "
         echo -e "${Red} 端口 (port):${Font} $(info_extraction '\"port\"') "
@@ -1116,7 +1092,7 @@ tls_type() {
         systemctl restart nginx
         judge "Nginx 重启"
     else
-        echo -e "${Error} ${RedBG} Nginx 或 配置文件不存在 或当前安装版本为 xtls ，请正确安装脚本后执行${Font}"
+        echo -e "${Error} ${RedBG} Nginx 或 配置文件不存在 或当前安装版本为 xtls , 请正确安装脚本后执行${Font}"
     fi
 }
 
@@ -1129,7 +1105,7 @@ show_error_log() {
 }
 
 ssl_update_manuel() {
-    [ -f ${amce_sh_file} ] && "/root/.acme.sh"/acme.sh --cron --home "/root/.acme.sh" || echo -e "${Error} ${RedBG} 证书签发工具不存在，请确认你是否使用了自己的证书 ${Font}"
+    [ -f ${amce_sh_file} ] && "/root/.acme.sh"/acme.sh --cron --home "/root/.acme.sh" || echo -e "${Error} ${RedBG} 证书签发工具不存在, 请确认你是否使用了自己的证书 ${Font}"
     domain="$(info_extraction '\"add\"')"
     "$HOME"/.acme.sh/acme.sh --installcert -d "${domain}" --fullchainpath ${ssl_chainpath}/xray.crt --keypath ${ssl_chainpath}/xray.key --ecc
 }
@@ -1169,7 +1145,7 @@ uninstall_all() {
     fi
     [[ -d $xray_conf_dir ]] && rm -rf $xray_conf_dir
     systemctl daemon-reload
-    echo -e "${OK} ${GreenBG} 已卸载，SSL证书文件已保留 ${Font}"
+    echo -e "${OK} ${GreenBG} 已卸载, SSL 证书文件已保留 ${Font}"
 }
 
 delete_tls_key_and_crt() {
@@ -1284,7 +1260,7 @@ update_sh() {
     echo "$ol_version" >$version_cmp
     echo "$shell_version" >>$version_cmp
     if [[ "$shell_version" < "$(sort -rV $version_cmp | head -1)" ]]; then
-        echo -e "${GreenBG} 存在新版本，是否更新 [Y/N]? ${Font}"
+        echo -e "${GreenBG} 存在新版本, 是否更新 [Y/N]? ${Font}"
         read -r update_confirm
         case $update_confirm in
         [yY][eE][sS] | [yY])
@@ -1364,7 +1340,7 @@ menu() {
     echo -e "${Green}5.${Font}  变更 UUIDv5/映射字符串"
     echo -e "${Green}6.${Font}  变更 alterid"
     echo -e "${Green}7.${Font}  变更 port"
-    echo -e "${Green}8.${Font}  变更 TLS 版本 (仅ws+tls有效)"
+    echo -e "${Green}8.${Font}  变更 TLS 版本 (仅Nginx+ws+tls有效)"
     echo -e "—————————————— 查看信息 ——————————————"
     echo -e "${Green}9.${Font}  查看 实时访问日志"
     echo -e "${Green}10.${Font} 查看 实时错误日志"
@@ -1374,7 +1350,7 @@ menu() {
     echo -e "${Green}13.${Font} 安装 MTproxy (不推荐使用)"
     echo -e "${Green}14.${Font} 证书 有效期更新"
     echo -e "${Green}15.${Font} 卸载 Xray"
-    echo -e "${Green}16.${Font} 更新 证书crontab计划任务"
+    echo -e "${Green}16.${Font} 更新 证书 crontab 计划任务"
     echo -e "${Green}17.${Font} 清空 证书遗留文件"
     echo -e "${Green}18.${Font} 退出 \n"
 
@@ -1426,7 +1402,7 @@ menu() {
             modify_nginx_port
         elif [[ $(info_extraction '\"tls\"') == "XTLS" ]]; then
             if [[ $(info_extraction '\"wsport\"') != "none" ]]; then
-                read -rp "请输入ws inbound_port:" xport
+                read -rp "请输入 ws inbound_port:" xport
             fi
             modify_inbound_port
         else
