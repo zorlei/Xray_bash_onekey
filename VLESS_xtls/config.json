@@ -36,6 +36,7 @@
         {
             "port": 10086,
             "listen": "127.0.0.1",
+            "tag": "VLESS-in",
             "protocol": "VLESS",
             "settings": {
                 "clients": [{
@@ -55,6 +56,30 @@
         }
     ],
     "outbounds": [{
-        "protocol": "freedom"
-    }]
+            "protocol": "freedom",
+            "tag": "direct"
+        },
+        {
+            "protocol": "blackhole",
+            "tag": "blocked"
+        }
+    ],
+    "dns": {
+        "servers": [
+            "https+local://1.1.1.1/dns-query",
+            "1.1.1.1",
+            "1.0.0.1",
+            "8.8.8.8",
+            "8.8.4.4",
+            "localhost"
+        ]
+    },
+    "routing": {
+        "domainStrategy": "AsIs",
+        "rules": [{
+            "type": "field",
+            "inboundTag": ["VLESS-in"],
+            "outboundTag": "direct"
+        }]
+    }
 }
