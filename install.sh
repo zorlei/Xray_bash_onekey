@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.4.5"
+shell_version="1.5.4.6"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -760,13 +760,13 @@ old_config_exist_check() {
             read -r old_config_fq
             case $old_config_fq in
             [yY][eE][sS] | [yY])
+                rm -rf $xray_qr_config_file
+                echo -e "${OK} ${GreenBG} 已删除旧配置  ${Font}"
+                ;;
+            *)
                 echo -e "${OK} ${GreenBG} 已保留旧配置  ${Font}"
                 echo -e "${OK} ${GreenBG} 停止安装  ${Font}"
                 bash idleleo
-                ;;
-            *)
-                rm -rf $xray_qr_config_file
-                echo -e "${OK} ${GreenBG} 已删除旧配置  ${Font}"
                 ;;
             esac
         fi
