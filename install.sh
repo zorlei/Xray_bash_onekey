@@ -734,7 +734,7 @@ xray_xtls_add_ws() {
         xport=$((RANDOM + 10000))
         modify_inbound_port
         artxport="none"
-        echo -e "${OK} ${GreenBG} 已跳过添加简单 ws协议  ${Font}"
+        echo -e "${OK} ${GreenBG} 已跳过添加简单 ws协议 ${Font}"
         ;;
     esac
 }
@@ -746,13 +746,13 @@ old_config_exist_check() {
             read -r old_config_fq
             case $old_config_fq in
             [yY][eE][sS] | [yY])
-                echo -e "${OK} ${GreenBG} 已保留旧配置  ${Font}"
+                echo -e "${OK} ${GreenBG} 已保留旧配置 ${Font}"
                 old_config_status="on"
                 old_config_input
                 ;;
             *)
                 rm -rf $xray_qr_config_file
-                echo -e "${OK} ${GreenBG} 已删除旧配置  ${Font}"
+                echo -e "${OK} ${GreenBG} 已删除旧配置 ${Font}"
                 ;;
             esac
         else
@@ -760,13 +760,13 @@ old_config_exist_check() {
             read -r old_config_fq
             case $old_config_fq in
             [yY][eE][sS] | [yY])
-                echo -e "${OK} ${GreenBG} 已保留旧配置  ${Font}"
-                echo -e "${OK} ${GreenBG} 停止安装  ${Font}"
+                echo -e "${OK} ${GreenBG} 已保留旧配置 ${Font}"
+                echo -e "${OK} ${GreenBG} 停止安装 ${Font}"
                 bash idleleo
                 ;;
             *)
                 rm -rf $xray_qr_config_file
-                echo -e "${OK} ${GreenBG} 已删除旧配置  ${Font}"
+                echo -e "${OK} ${GreenBG} 已删除旧配置 ${Font}"
                 ;;
             esac
         fi
