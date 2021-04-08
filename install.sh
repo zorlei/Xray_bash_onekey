@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.4.0"
+shell_version="1.5.4.1"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -758,6 +758,7 @@ old_config_exist_check() {
 old_config_input () {
     if [[ ${shell_mode} == "ws" ]]; then
         port=$(info_extraction '\"port\"')
+        xport=$(info_extraction '\"inbound_port\"')
         UUID5_char=$(info_extraction '\"idc\"')
         UUID=$(info_extraction '\id\"')
         camouflage=$(info_extraction '\"path\"')
@@ -933,6 +934,7 @@ vless_qr_config_tls_ws() {
   "ps": "${domain}",
   "add": "${domain}",
   "port": "${port}",
+  "inbound_port": "${xport}",
   "idc": "${UUID5_char}",
   "id": "${UUID}",
   "net": "ws",
@@ -1033,6 +1035,9 @@ basic_information() {
         echo -e "\n${Red} —————————————— Xray 配置信息 —————————————— ${Font}"
         echo -e "${Red} 地址 (address):${Font} $(info_extraction '\"add\"') "
         echo -e "${Red} 端口 (port):${Font} $(info_extraction '\"port\"') "
+        if [[ "$shell_mode" == "ws" ]]; then
+            echo -e "${Red} Xray 端口 (inbound_port):${Font} $(info_extraction '\"inbound_port\"') "
+        fi
         echo -e "${Red} UUIDv5 映射字符串:${Font} $(info_extraction '\"idc\"')"
         echo -e "${Red} 用户id (UUID):${Font} $(info_extraction '\"id\"')"
 
