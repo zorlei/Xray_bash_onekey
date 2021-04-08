@@ -799,9 +799,8 @@ old_config_input () {
         read -r old_config_input_fq
         case $old_config_input_fq in
         [yY][eE][sS] | [yY])
+            old_config_status="off"
             echo -e "${OK} ${GreenBG} 已保留旧配置 ${Font}"
-            echo -e "${OK} ${GreenBG} 停止安装 ${Font}"
-            bash idleleo
             ;;
         *)
             rm -rf $xray_qr_config_file
