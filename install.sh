@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.4.4"
+shell_version="1.5.4.5"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -740,20 +740,36 @@ xray_xtls_add_ws() {
 }
 
 old_config_exist_check() {
-    if [[ -f $xray_qr_config_file ]] && [[ ${old_shell_mode} == ${shell_mode} ]]; then
-        echo -e "${GreenBG} 检测到旧配置文件, 是否读取旧文件配置 [Y/N]? ${Font}"
-        read -r old_config_fq
-        case $old_config_fq in
-        [yY][eE][sS] | [yY])
-            echo -e "${OK} ${GreenBG} 已保留旧配置  ${Font}"
-            old_config_status="on"
-            old_config_input
-            ;;
-        *)
-            rm -rf $xray_qr_config_file
-            echo -e "${OK} ${GreenBG} 已删除旧配置  ${Font}"
-            ;;
-        esac
+    if [[ -f $xray_qr_config_file ]]; then
+        if [[ ${old_shell_mode} == ${shell_mode} ]]; then
+            echo -e "${GreenBG} 检测到旧配置文件, 是否读取旧文件配置 [Y/N]? ${Font}"
+            read -r old_config_fq
+            case $old_config_fq in
+            [yY][eE][sS] | [yY])
+                echo -e "${OK} ${GreenBG} 已保留旧配置  ${Font}"
+                old_config_status="on"
+                old_config_input
+                ;;
+            *)
+                rm -rf $xray_qr_config_file
+                echo -e "${OK} ${GreenBG} 已删除旧配置  ${Font}"
+                ;;
+            esac
+        else
+            echo -e "${GreenBG} 检测到当前安装模式与旧配置的安装模式不一致, 是否删除旧配置文件 [Y/N]? ${Font}"
+            read -r old_config_fq
+            case $old_config_fq in
+            [yY][eE][sS] | [yY])
+                echo -e "${OK} ${GreenBG} 已保留旧配置  ${Font}"
+                echo -e "${OK} ${GreenBG} 停止安装  ${Font}"
+                bash idleleo
+                ;;
+            *)
+                rm -rf $xray_qr_config_file
+                echo -e "${OK} ${GreenBG} 已删除旧配置  ${Font}"
+                ;;
+            esac
+        fi
     fi
 }
 
