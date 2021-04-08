@@ -19,7 +19,7 @@
 ### 准备工作
 * 准备一个域名，并将A记录添加好。
 * [Xray官方说明](https://github.com/XTLS)，了解 TLS WebSocket 及 Xray 相关信息。
-* **安装好 wget**。
+* **安装好 wget**，Centos用户运行：`yum install -y wget`；Debian/Ubuntu用户运行：`apt install -y wget`。
 
 ### 安装/更新方式（此为Xray版）
 VLESS+Nginx+WebSocket+TLS 或 VLESS+XTLS+Nginx  二选一：
