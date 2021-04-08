@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.4.1"
+shell_version="1.5.4.2"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -65,6 +65,7 @@ openssl_version="1.1.1k"
 jemalloc_version="5.2.1"
 xtls_add_ws="off"
 old_config_status="off"
+old_shell_mode="None"
 random_num=$((RANDOM % 12 + 4))
 THREAD=$(($(grep 'processor' /proc/cpuinfo | sort -u | wc -l) + 1))
 
@@ -738,7 +739,7 @@ xray_xtls_add_ws() {
 }
 
 old_config_exist_check() {
-    if [[ -f $xray_qr_config_file ]]; then
+    if [[ -f $xray_qr_config_file ]] && [[ ${old_shell_mode} == ${shell_mode} ]]; then
         echo -e "${GreenBG} 检测到旧配置文件, 是否读取旧文件配置 [Y/N]? ${Font}"
         read -r old_config_fq
         case $old_config_fq in
@@ -1210,6 +1211,7 @@ judge_mode() {
             shell_mode="wsonly"
             shell_mode_show="ws ONLY"
         fi
+        old_shell_mode=${shell_mode}
     fi
 }
 
