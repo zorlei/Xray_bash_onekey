@@ -1414,7 +1414,7 @@ menu() {
     echo -e "--- authored by paniy ---"
     echo -e "--- changed by www.idleleo.com ---"
     echo -e "--- https://github.com/paniy ---\n"
-    echo -e "当前已安装版本: ${shell_mode_show}\n"
+    echo -e "当前已安装模式: ${shell_mode_show}\n"
 
     idleleo_commend
 
