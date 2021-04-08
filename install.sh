@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.4.6"
+shell_version="1.5.4.7"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -756,17 +756,17 @@ old_config_exist_check() {
                 ;;
             esac
         else
-            echo -e "${GreenBG} 检测到当前安装模式与旧配置的安装模式不一致, 是否删除旧配置文件 [Y/N]? ${Font}"
+            echo -e "${GreenBG} 检测到当前安装模式与旧配置的安装模式不一致, 是否保留旧配置文件 [Y/N]? ${Font}"
             read -r old_config_fq
             case $old_config_fq in
             [yY][eE][sS] | [yY])
-                rm -rf $xray_qr_config_file
-                echo -e "${OK} ${GreenBG} 已删除旧配置  ${Font}"
-                ;;
-            *)
                 echo -e "${OK} ${GreenBG} 已保留旧配置  ${Font}"
                 echo -e "${OK} ${GreenBG} 停止安装  ${Font}"
                 bash idleleo
+                ;;
+            *)
+                rm -rf $xray_qr_config_file
+                echo -e "${OK} ${GreenBG} 已删除旧配置  ${Font}"
                 ;;
             esac
         fi
