@@ -18,7 +18,7 @@
 
 ### 准备工作
 * 准备一个域名，并将A记录添加好。
-* [Xray官方说明](https://github.com/XTLS)，了解 TLS WebSocket 及 Xray 相关信息。
+* [Xray官方说明](https://xtls.github.io)，大概了解 TLS WebSocket XTLS 及 Xray 相关信息。
 * **安装好 wget**，Centos用户运行：`yum install -y wget`；Debian/Ubuntu用户运行：`apt install -y wget`。
 
 ### 安装/更新方式（此为Xray版）
@@ -39,8 +39,7 @@ wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.c
 ### 鸣谢
 * 本脚本来源于 https://github.com/wulabing/V2Ray_ws-tls_bash_onekey 在此感谢 wulabing
 * 本脚本中 MTProxy-go TLS 版本项目引用 https://github.com/whunt1/onekeymakemtg 在此感谢 whunt1
-* 本脚本中 锐速4合1脚本原项目引用 https://www.94ish.me/1635.html 在此感谢
-* 本脚本中 锐速4合1脚本修改版项目引用 https://github.com/ylx2016/Linux-NetSpeed 在此感谢 ylx2016
+* 本脚本中 TCP加速 脚本项目引用 https://github.com/ylx2016/Linux-NetSpeed 在此感谢 ylx2016
 
 ### 证书
 > 如果你已经拥有了你所使用域名的证书文件，可以将 crt 和 key 文件命名为 xray.crt xray.key 放在 /etc/idleleo/cert 目录下（若目录不存在请先建目录），请注意证书文件权限及证书有效期，自定义证书有效期过期后请自行续签。
