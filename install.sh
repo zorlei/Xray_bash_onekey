@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.5.0"
+shell_version="1.5.5.1"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -369,7 +369,7 @@ modify_nginx_other() {
     sed -i "/server_name/c \\\t\\tserver_name ${domain};" ${nginx_conf}
     if [[ "$shell_mode" != "xtls" ]]; then
         sed -i "/location/c \\\tlocation ${camouflage}" ${nginx_conf}
-        sed -i "/xray-serverc/c \\\t\\t\\tserver 127.0.0.1:${xport} weight=50 max_fails=5 fail_timeout=2;" ${nginx_upstream_conf}
+        sed -i "/xray-serverc/c \\\t\\tserver 127.0.0.1:${xport} weight=50 max_fails=5 fail_timeout=2;" ${nginx_upstream_conf}
     fi
     sed -i "/return/c \\\t\\treturn 301 https://${domain}\$request_uri;" ${nginx_conf}
     sed -i "/returc/c \\\t\\t\\treturn 302 https://www.idleleo.com/helloworld;" ${nginx_conf}
@@ -1107,7 +1107,7 @@ ssl_judge_and_install() {
     fi
 
     if [[ -f "$HOME/.acme.sh/${domain}_ecc/${domain}.key" && -f "$HOME/.acme.sh/${domain}_ecc/${domain}.cer" ]]; then
-        echo "${GreenBG} 部分证书文件已存在 ${Font}"
+        echo -e "${GreenBG} 部分证书文件已存在 ${Font}"
         echo -e "${GreenBG} 是否删除 [Y/N]? ${Font}"
         read -r ssl_delete_2
         case $ssl_delete_2 in
@@ -1121,7 +1121,7 @@ ssl_judge_and_install() {
 
         esac
     elif [[ -f "${ssl_chainpath}/xray.key" || -f "${ssl_chainpath}/xray.crt" ]]; then
-        echo "证书文件已存在"
+        echo -e "${GreenBG} 证书文件已存在 ${Font}"
         judge "证书应用"
     elif [[ ! -f "${ssl_chainpath}/xray.key" || ! -f "${ssl_chainpath}/xray.crt"  ]] && [[ -f "$HOME/.acme.sh/${domain}_ecc/${domain}.key" && -f "$HOME/.acme.sh/${domain}_ecc/${domain}.cer" ]]; then
         "$HOME"/.acme.sh/acme.sh --installcert -d "${domain}" --fullchainpath ${ssl_chainpath}/xray.crt --keypath ${ssl_chainpath}/xray.key --ecc
