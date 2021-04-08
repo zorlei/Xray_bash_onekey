@@ -348,7 +348,7 @@ modify_inbound_port() {
     elif [[ "$shell_mode" == "xtls" ]]; then
         #        sed -i "/\"port\"/c  \    \"port\":${port}," ${xray_conf}
         sed -i "8c\        \"port\": ${port}," ${xray_conf}
-        sed -i "37c\        \"port\": ${xport}," ${xray_conf}
+        sed -i "38c\        \"port\": ${xport}," ${xray_conf}
     fi
     judge "Xray port 修改"
     if [[ "$shell_mode" != "ws" ]]; then
