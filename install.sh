@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.4.7"
+shell_version="1.5.4.8"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -793,6 +793,22 @@ old_config_input () {
         UUID5_char=$(info_extraction '\"idc\"')
         UUID=$(info_extraction '\id\"')
         camouflage=$(info_extraction '\"path\"')
+    fi
+    if [[ 0 -ne $? ]]; then
+        echo -e "${GreenBG} 检测到旧配置文件不完整, 是否保留旧配置文件 [Y/N]? ${Font}"
+        read -r old_config_input_fq
+        case $old_config_input_fq in
+        [yY][eE][sS] | [yY])
+            echo -e "${OK} ${GreenBG} 已保留旧配置 ${Font}"
+            echo -e "${OK} ${GreenBG} 停止安装 ${Font}"
+            bash idleleo
+            ;;
+        *)
+            rm -rf $xray_qr_config_file
+            old_config_status="off"
+            echo -e "${OK} ${GreenBG} 已删除旧配置 ${Font}"
+            ;;
+        esac
     fi
 }
 
