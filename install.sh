@@ -314,7 +314,7 @@ nginx_upstream_server_set() {
             read -rp "请输入负载均衡 地址 (host):" upstream_host
             read -rp "请输入负载均衡 端口 (port):" upstream_port
             read -rp "请输入负载均衡 权重 (0~100, 初始值为50):" upstream_weight
-            sed -i "1a\server ${upstream_host}:${upstream_port} weight=${upstream_weight} max_fails=5 fail_timeout=2;" ${nginx_upstream_conf}
+            sed -i "1a\\\t\\tserver ${upstream_host}:${upstream_port} weight=${upstream_weight} max_fails=5 fail_timeout=2;" ${nginx_upstream_conf}
             systemctl restart nginx
             judge "追加 Nginx 负载均衡"
             ;;
