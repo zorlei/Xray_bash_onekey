@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.4.2"
+shell_version="1.5.4.4"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -259,6 +259,7 @@ firewall_set() {
         fi
     fi
     echo -e "${OK} ${GreenBG} 开放防火墙相关端口 ${Font}"
+    echo -e "${GreenBG} 若修改配置, 请注意关闭防火墙相关端口 ${Font}"
     echo -e "${OK} ${GreenBG} 配置 Xray FullCone ${Font}"
 }
 
@@ -902,13 +903,10 @@ stop_process_systemd() {
 }
 
 stop_service() {
-    systemctl stop nginx
-    systemctl stop xray
-    echo -e "${OK} ${GreenBG} 停止已有服务 ${Font}"
-}
-
-nginx_process_disabled() {
     [ -f $nginx_systemd_file ] && systemctl stop nginx && systemctl disable nginx
+    systemctl stop xray
+    systemctl disable xray
+    echo -e "${OK} ${GreenBG} 停止已有服务 ${Font}"
 }
 
 acme_cron_update() {
@@ -1205,8 +1203,10 @@ judge_mode() {
             shell_mode="xtls"
             if [[ $(info_extraction '\"wsport\"') != "none" ]]; then
                 xtls_add_ws="on"
+                shell_mode_show="XTLS+Nginx+ws"
+            else
+                shell_mode_show="XTLS+Nginx"
             fi
-            shell_mode_show="XTLS+Nginx"
         elif [[ $(info_extraction '\"tls\"') == "none" ]]; then
             shell_mode="wsonly"
             shell_mode_show="ws ONLY"
