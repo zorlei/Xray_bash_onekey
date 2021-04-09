@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.5.3"
+shell_version="1.5.5.4"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -1354,7 +1354,7 @@ update_sh() {
         [yY][eE][sS] | [yY])
             #rm -f ${idleleo_commend_file}
             ln -s ${idleleo_xray_dir}/install.sh ${idleleo_commend_file}
-            wget -N --no-check-certificate -P ${idleleo_xray_dir} https://raw.githubusercontent.com/paniy/Xray_bash_onekey/main/install.sh && chmod +x ${idleleo_xray_dir}/install.sh && ./${idleleo_xray_dir}/install.s
+            wget -N --no-check-certificate -P ${idleleo_xray_dir} https://raw.githubusercontent.com/paniy/Xray_bash_onekey/main/install.sh && chmod +x ${idleleo_xray_dir}/install.sh && .${idleleo_xray_dir}/install.s
             echo -e "${OK} ${GreenBG} 更新完成 ${Font}"
             ;;
         *) ;;
