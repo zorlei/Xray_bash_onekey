@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.5.7"
+shell_version="1.5.5.8"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -1346,7 +1346,7 @@ install_xray_ws_only() {
 update_sh() {
     ol_version=$(curl -L -s https://raw.githubusercontent.com/paniy/Xray_bash_onekey/main/install.sh | grep "shell_version=" | head -1 | awk -F '=|"' '{print $3}')
     echo "$ol_version" >$version_cmp
-    [[ -z ${ol_version} ]] && echo -e "${Error} ${RedBG}  检测最新版本失败! ${Font}" && clear && bash idleleo
+    [[ -z ${ol_version} ]] && clear && echo -e "${Error} ${RedBG}  检测最新版本失败! ${Font}" && bash idleleo
     echo "$shell_version" >>$version_cmp
     if [[ "$shell_version" != "$(sort -rV $version_cmp | head -1)" ]]; then
         echo -e "${GreenBG} 存在新版本, 是否更新 [Y/N]? ${Font}"
@@ -1355,17 +1355,17 @@ update_sh() {
         [yY][eE][sS] | [yY])
             rm -f ${idleleo_commend_file}
             wget -N --no-check-certificate -P ${idleleo_xray_dir} https://raw.githubusercontent.com/paniy/Xray_bash_onekey/main/install.sh && chmod +x ${idleleo_xray_dir}/install.sh
-            echo -e "${OK} ${GreenBG} 更新完成 ${Font}"
             ln -s ${idleleo_xray_dir}/install.sh ${idleleo_commend_file}
             clear
+            echo -e "${OK} ${GreenBG} 更新完成 ${Font}"
             bash idleleo
             ;;
         *) ;;
 
         esac
     else
-        echo -e "${OK} ${GreenBG} 当前版本为最新版本 ${Font}"
         clear
+        echo -e "${OK} ${GreenBG} 当前版本为最新版本 ${Font}"
         bash idleleo
     fi
 
@@ -1509,9 +1509,11 @@ menu() {
         bash idleleo
         ;;
     9)
+        clear
         show_access_log
         ;;
     10)
+        clear
         show_error_log
         ;;
     11)
@@ -1522,9 +1524,11 @@ menu() {
         bash idleleo
         ;;
     12)
+        clear
         bbr_boost_sh
         ;;
     13)
+        clear
         mtproxy_sh
         ;;
     14)
