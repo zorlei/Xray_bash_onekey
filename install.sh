@@ -33,7 +33,7 @@ Error="${Red}[错误]${Font}"
 Warning="${Red}[警告]${Font}"
 
 # 版本
-shell_version="1.5.5.8"
+shell_version="1.5.5.9"
 shell_mode="None"
 shell_mode_show="未安装"
 version_cmp="/tmp/version_cmp.tmp"
@@ -1239,6 +1239,34 @@ delete_tls_key_and_crt() {
     echo -e "${OK} ${GreenBG} 已清空证书遗留文件 ${Font}"
 }
 
+clear_timeout() {
+    echo -e "${Warning} ${YellowBG} 3秒后将清空屏幕! ${Font}"
+    timeout=0
+    timeout_str="#"
+    while [ $timeout -le 60 ]; do
+        if [ $timeout -le 20 ]; then
+            let timeout_color=32
+            let timeout_bg=42
+            timeout_index="3"
+        elif [ $timeout -le 40 ]; then
+            let timeout_color=33
+            let timeout_bg=43
+            timeout_index="2"
+        elif [ $timeout -le 58 ]; then
+            let timeout_color=31
+            let timeout_bg=41
+            timeout_index="1"
+        else
+            timeout_index="0"
+        fi
+        printf "\033[${timeout_color};${timeout_bg}m%-s\033[0m \033[${timeout_color}m%d\033[0m\r" "$timeout_str" "$timeout_index"
+        sleep 0.05
+        let timeout=timeout+1
+        timeout_str+="#"
+    done
+    clear
+}
+
 judge_mode() {
     if [ -f $xray_bin_dir ]; then
         if [[ $(info_extraction '\"tls\"') == "TLS" ]]; then
@@ -1379,6 +1407,11 @@ maintain() {
 
 list() {
     case $1 in
+    show)
+        basic_information
+        vless_qr_link_image
+        show_information
+        ;;
     tls_modify)
         tls_type
         ;;
@@ -1462,7 +1495,6 @@ menu() {
         bash idleleo
         ;;
     3)
-        
         echo -e "${Warning} ${YellowBG} 此模式推荐用于负载均衡, 一般情况不推荐使用, 是否安装 [Y/N]? ${Font}"
         read -r wsonly_fq
         case $wsonly_fq in
@@ -1476,12 +1508,14 @@ menu() {
         ;;
     4)
         xray_update
+        clear_timeout
         bash idleleo
         ;;
     5)
         UUID_set
         modify_UUID
         start_process_systemd
+        clear_timeout
         bash idleleo
         ;;
     6)
@@ -1498,14 +1532,17 @@ menu() {
         fi
         firewall_set
         start_process_systemd
+        clear_timeout
         bash idleleo
         ;;
     7)
         tls_type
+        clear_timeout
         bash idleleo
         ;;
     8)
         nginx_upstream_server_set
+        clear_timeout
         bash idleleo
         ;;
     9)
@@ -1535,24 +1572,26 @@ menu() {
         stop_process_systemd
         ssl_update_manuel
         start_process_systemd
+        clear_timeout
         bash idleleo
         ;;
     15)
         uninstall_all
-        clear
+        clear_timeout
         bash idleleo
         ;;
     16)
         acme_cron_update
+        clear_timeout
         bash idleleo
         ;;
     17)
         delete_tls_key_and_crt
-        clear
+        clear_timeout
         bash idleleo
         ;;
     18)
-        clear
+        clear_timeout
         exit 0
         ;;
     *)
