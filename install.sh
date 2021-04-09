@@ -1354,7 +1354,7 @@ update_sh() {
         [yY][eE][sS] | [yY])
             #rm -f ${idleleo_commend_file}
             ln -s ${idleleo_xray_dir}/install.sh ${idleleo_commend_file}
-            wget -N --no-check-certificate -P ${idleleo_xray_dir} https://raw.githubusercontent.com/paniy/Xray_bash_onekey/main/install.sh && chmod +x ${idleleo_xray_dir}/install.sh && .${idleleo_xray_dir}/install.s
+            wget -N --no-check-certificate -P ${idleleo_xray_dir} https://raw.githubusercontent.com/paniy/Xray_bash_onekey/main/install.sh && chmod +x ${idleleo_xray_dir}/install.sh && .${idleleo_xray_dir}/install.sh
             echo -e "${OK} ${GreenBG} 更新完成 ${Font}"
             ;;
         *) ;;
